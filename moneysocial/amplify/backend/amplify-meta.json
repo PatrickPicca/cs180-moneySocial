@@ -1,0 +1,15 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-moneysocal-staging-22006-authRole",
+      "UnauthRoleArn": "arn:aws:iam::206284797132:role/amplify-moneysocal-staging-22006-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::206284797132:role/amplify-moneysocal-staging-22006-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-moneysocal-staging-22006-deployment",
+      "UnauthRoleName": "amplify-moneysocal-staging-22006-unauthRole",
+      "StackName": "amplify-moneysocal-staging-22006",
+      "StackId": "arn:aws:cloudformation:us-west-1:206284797132:stack/amplify-moneysocal-staging-22006/46c5b8d0-a369-11ed-a422-062f4e92c0fb",
+      "AmplifyAppId": "d4qzb7rx6bjg1"
+    }
+  }
+}
