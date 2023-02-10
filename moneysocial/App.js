@@ -1,21 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { Button, Alert, SafeAreaView } from 'react-native';
+import { Button, Alert, SafeAreaView, TouchableOpacity } from 'react-native';
 
 
 export default function App() {
 
-
+  //The below vars will need to be converted to use 'useState's if you want to implement them within the switch
   var userPassword;   //Represents the users login password.
   var userName;       //Represents the users login name
   var groupList = []; //Represents the IDs of all groups the user is a part of.
   var expenseCategories = []; //Represents the list of Categories the user has specified for themself. 
   var expenses;
 
-
   //count represents the varying screens the user will see, depending on the buttons they press
   var [count, setCount] = useState(3);  
+  //Counter represents a second count that alternates in sending the user to either the default screen or the Test screen
+  var [counter, setCounter] = useState(1);
+
+
   switch (count)
   {
     case 0:     //Test screen. Use as basis.
@@ -53,11 +56,25 @@ export default function App() {
           <Text>Password:</Text>   
           <StatusBar style="auto" />
           <View style={styles.buttonContainer}>
+              
             <Button
                 // Some properties given to Button
                 title="Login"
                 //onPress={() => Alert.alert('Its GeeksforGeeks !')}
-                onPress={() => setCount(count = 0)}
+                onPress={() => {
+                  //setCount(count = 0)
+                  if (counter == 1)
+                  {
+                    setCounter(counter = 0)
+                    setCount(count = null)
+                  }
+                  else 
+                  {
+                    setCounter(counter = 1)
+                    setCount(count = 0)
+                  }
+                
+                }}
             />
           </View>
         </View> 
@@ -79,6 +96,10 @@ export default function App() {
           />
         </View>
         );  
+    break;
+    case 4:     //Logging in Screen
+
+
     break;
     default:
       return (
