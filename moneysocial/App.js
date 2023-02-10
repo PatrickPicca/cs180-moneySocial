@@ -1,8 +1,8 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import React, { useState, Component } from 'react';
 import { Button, Alert, SafeAreaView, TouchableOpacity } from 'react-native';
-
 
 export default function App() {
 
@@ -13,8 +13,13 @@ export default function App() {
   var expenseCategories = []; //Represents the list of Categories the user has specified for themself. 
   var expenses;
 
+  const widthAndHeight = 250
+  const series = [123, 321, 123, 789, 537]
+  const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
+
+
   //count represents the varying screens the user will see, depending on the buttons they press
-  var [count, setCount] = useState(3);  
+  var [count, setCount] = useState();  
   //Counter represents a second count that alternates in sending the user to either the default screen or the Test screen
   var [counter, setCounter] = useState(1);
 
@@ -100,6 +105,9 @@ export default function App() {
     case 4:     //Logging in Screen
 
 
+    break;
+    case 5:     //Example Pie Chart
+     
     break;
     default:
       return (
