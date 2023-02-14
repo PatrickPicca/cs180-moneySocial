@@ -13,8 +13,8 @@ function stackNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                        <Stack.Screen name ="WelcomeScreen" component={WelcomeScreen}/>
                         <Stack.Screen name ="PersonalExpense" component={PersonalExpense}/>
+                        <Stack.Screen name ="WelcomeScreen" component={WelcomeScreen}/>
                         <Stack.Screen name ="groupExpense" component={groupExpense}/>
             </Stack.Navigator>
         </NavigationContainer>
