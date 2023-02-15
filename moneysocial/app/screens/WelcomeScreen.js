@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
+import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import colors from '../config/colors'
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -11,6 +12,7 @@ function WelcomeScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
+
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
@@ -56,6 +58,17 @@ function WelcomeScreen(props) {
         }
     }
 
+    const PersonalExpenseScreenHandler = () => {
+      props.navigation.navigate('PersonalExpense');
+    }
+
+    const TouchablePersonalExpenseScreenHandler = () => {
+      const onPress = () => {
+        props.navigation.navigate('PersonalExpense');
+      }
+    }
+
+
     return (
     <View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
@@ -71,20 +84,28 @@ function WelcomeScreen(props) {
           />
         </Svg>
         <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
+          <Text onPress={() => (imagePosition.value = 1)}>X</Text>
         </Animated.View>
+
+        <TouchableOpacity style={styles.button} onPress={()=> {console.log("It works or not?")}}>
+            <Text style={styles.buttonText}>Go to PersonalScreen</Text>
+        </TouchableOpacity>
+
       </Animated.View>
       <View style={styles.bottomContainer}>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-       </Animated.View>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
-       </Animated.View>
+        <Animated.View style={buttonsAnimatedStyle}>
+          <Pressable style={styles.button} onPress={loginHandler}>
+            <Text style={styles.buttonText}>LOG IN</Text>
+          </Pressable>
+        </Animated.View>
+        <Animated.View style={buttonsAnimatedStyle}>
+          <Pressable style={styles.button} onPress={registerHandler}>
+            <Text style={styles.buttonText}>REGISTER</Text>
+          </Pressable>
+        </Animated.View>
+
+
+        
         <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
           <TextInput
             placeholder="Email"
@@ -107,6 +128,14 @@ function WelcomeScreen(props) {
             <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
           </View>
         </Animated.View>
+
+
+
+
+
+
+
+
       </View>
     </View>
     );
@@ -115,6 +144,7 @@ function WelcomeScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+
         justifyContent: 'flex-end',
         backgroundColor: colors.background,
       },
@@ -128,7 +158,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
+        
       },
+
       buttonText: {
         fontSize: 20,
         fontWeight: '600',

@@ -6,7 +6,7 @@ import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, wit
 import colors from '../config/colors'
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
-import WelcomeScreen from './WelcomeScreen';
+//import WelcomeScreen from './WelcomeScreen';
 
 const {width, height} = Dimensions.get('window');
 
@@ -15,8 +15,6 @@ function PersonalExpenseScreen(props) {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
-    //navigation variable enables user of the stackNavigator in MainNavigation.
-    const navigation = useNavigation();
 
     //Here we will need the entire list of Expense objects, of all categories, from this specific user.
       //In the view section you should be able to view the following
@@ -75,8 +73,8 @@ function PersonalExpenseScreen(props) {
     }
 
     const WelcomeScreenHandler = () => {
-      navigation.navigate('WelcomeScreen');
-  }
+      props.navigation.navigate('WelcomeScreen');
+    }
 
     return (
 
