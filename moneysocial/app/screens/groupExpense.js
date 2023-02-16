@@ -83,6 +83,7 @@ function PersonalExpenseScreen(props) {
       }
   }
 
+    /*
     return (
     <View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
@@ -137,6 +138,7 @@ function PersonalExpenseScreen(props) {
       </View>
     </View>
     );
+    */
 }
 
 const styles = StyleSheet.create({

@@ -15,10 +15,12 @@ function PersonalExpenseScreen(props) {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
+    const myValue = 50;
 
     //Here we will need the entire list of Expense objects, of all categories, from this specific user.
       //In the view section you should be able to view the following
           //Current overall total expense for the past month.
+            //This can be display with a number as well as a pie chart breakdown oc categories by color.
           //Button option to view total expense for the past month by category.
           //Button option to view the list of all individual expenses of all time.
           //Button option to make an expense.
@@ -79,13 +81,24 @@ function PersonalExpenseScreen(props) {
     return (
 
       <View style={styles.container}>
+
+        
+
+        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
+          </View>
+        </Animated.View>
+
+
         <View style={styles.bottomContainer}></View>
-          <Animated.View style={buttonsAnimatedStyle}>
-            <Pressable style={styles.button} onPress={WelcomeScreenHandler}>
-              <Text style={styles.buttonText}>Go to WelcomeScreen</Text>
-            </Pressable>
-          </Animated.View>
-        </View>
+        <Animated.View style={buttonsAnimatedStyle}>
+          <Pressable style={styles.button} onPress={WelcomeScreenHandler}>
+            <Text style={styles.buttonText}>Go to WelcomeScreen</Text>
+          </Pressable>
+        </Animated.View>
+      </View>
+      
     );
 
     /*
@@ -169,6 +182,12 @@ const styles = StyleSheet.create({
         color: 'white',
         letterSpacing: 0.5
       },
+      displayText: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: 0.5
+      },
       bottomContainer: {
         justifyContent: 'center',
         height: height / 2,
@@ -197,6 +216,27 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
+        
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+      },
+      displayBalance: {
+        backgroundColor: colors.accent,
+        height: 55,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25, //Affects the radius of the corners
+        marginHorizontal: 20,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
