@@ -12,7 +12,8 @@ function PersonalExpenseScreen(props) {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
     
-
+    const myValue1 = 360;
+    const myValue2 = 1050;
     //Here we will list all groups you are a part of, alongside any current, total expenses you have made for that group.
       //In the view section you should be able to view / do the following
           //A list of all groups you are in and the current total expenses for them.
@@ -63,82 +64,54 @@ function PersonalExpenseScreen(props) {
         }
     })
 
-    const loginHandler = () => {
-        imagePosition.value = 0;
-        if(isRegistering){
-            setIsRegistering(false);
-        }
-    }
-    const registerHandler = () => {
-        imagePosition.value = 0;
-        if(!isRegistering){
-            setIsRegistering(true);
-        }
-    }
-
     const WelcomeScreenHandler = () => {
-      imagePosition.value = 0;
-      if(!isRegistering){
-          setIsRegistering(true);
-      }
-  }
+      props.navigation.navigate('WelcomeScreen');
+    }
 
-    /*
+    const ExpenseListScreenHander = () => {
+      props.navigation.navigate('ExpenseListScreen');
+    }
+    const PersonalExpenseScreenHandler = () => {
+      props.navigation.navigate('PersonalExpense');
+    }
+
+
+    //View should have a list of all groups the user is in, as well as that groups current total expense.
     return (
-    <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height} width={width}>
-            <ClipPath id = "clipPathId">
-                <Ellipse cx={width/2} rx={height} ry={height}/>
-            </ClipPath>
-          <Image
-            href={require("../assets/moneysocial-logo.png")}
-            width={width}
-            height = {height-250}
-            clipPath = "url(#clipPathId)"
-          />
-        </Svg>
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
-        </Animated.View>
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-       </Animated.View>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
-       </Animated.View>
-        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          {isRegistering && (
-            <TextInput
-            placeholder="Full Name"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          )}
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="black"
-            style={styles.textInput}
-            /> 
-          <View style={styles.formButton}>
-            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
+
+
+      <View style={styles.container}>
+        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Group 1: $' + myValue1}</Text>
           </View>
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Group 2: $' + myValue2}</Text>
+          </View>
+
+        </Animated.View> 
+        <Animated.View style={buttonsAnimatedStyle}>
+          <View style={styles.bottomScreenHeader}>
+            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
+              <Text style={styles.bottombuttonText}>Logout</Text>
+            </Pressable>
+
+            <Pressable style={styles.bottombutton} onPress={PersonalExpenseScreenHandler}>
+              <Text style={styles.bottombuttonText}>Home</Text>
+            </Pressable>
+
+            <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
+              <Text style={styles.bottombuttonText}>Details</Text>
+            </Pressable>
+
+            
+            
+          </View>  
         </Animated.View>
       </View>
-    </View>
     );
-    */
+    
 }
 
 const styles = StyleSheet.create({
@@ -148,15 +121,30 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
       },
       button: {
+        
         backgroundColor: colors.primary,
         height: 55,
+        width: 60,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 35,
-        marginHorizontal: 40,
+        marginHorizontal: 5,
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
+      },
+      bottombutton: {
+        
+        backgroundColor: colors.primary,
+        height: 55,
+        width: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 35,
+        marginHorizontal: 5,
+        marginVertical: 10,
+        borderWidth: 2,
+        borderColor: 'pink'
       },
       buttonText: {
         fontSize: 20,
@@ -164,9 +152,20 @@ const styles = StyleSheet.create({
         color: 'white',
         letterSpacing: 0.5
       },
+      bottombuttonText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: 0.5
+      },
       bottomContainer: {
         justifyContent: 'center',
         height: height / 2,
+      },
+      bottomScreenHeader: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        height: height / 8,
       },
       textInput: {
         height: 50,

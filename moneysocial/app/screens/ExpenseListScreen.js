@@ -10,24 +10,19 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-function PersonalExpenseScreen(props) {
+function ExpenseListScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
     const myValue = 50;
 
-    //Here we will need the entire list of Expense objects, of all categories, from this specific user.
-      //In the view section you should be able to view the following
-          //Current overall total expense for the past month.
-            //This can be display with a number as well as a pie chart breakdown oc categories by color.
-          //Button option to view total expense for the past month by category.
-          //Button option to view the list of all individual expenses of all time.
-          //Button option to make an expense.
-            //This should take you to some Expense screen where you can fill out a varying list of details for that one expense.
-    
-    //We will also need a button that lead to the WelcomeScreen that logs you out.
-    //We will also need to add a group view button, that would take you to the GroupExpense Screen.
+    //This screen should have a filter bar at the top to allow the user to filter all epxenses they are seeing.
+    //Should display a list of all expenses for the user, starting with the most previous.
+      //Display Expense amount, category name, and date for now.
+    //Should be able to scroll????? through the list of expenses.
+
+    //Bottom of the screen should have a bar for screen navigation of a few buttons.
 
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
@@ -81,38 +76,33 @@ function PersonalExpenseScreen(props) {
     const GroupScreenHandler = () => {
       props.navigation.navigate('groupExpense');
     }
-
-    const ExpenseListScreenHander = () => {
-      props.navigation.navigate('ExpenseListScreen');
+    const PersonalExpenseScreenHandler = () => {
+      props.navigation.navigate('PersonalExpense');
     }
 
     return (
 
       <View style={styles.container}>
-
-        
-
         <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
           <View style={styles.displayBalance}>
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
-        </Animated.View>
-
-
-        
+        </Animated.View> 
         <Animated.View style={buttonsAnimatedStyle}>
           <View style={styles.bottomScreenHeader}>
             <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
               <Text style={styles.bottombuttonText}>Logout</Text>
             </Pressable>
 
-            <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
-              <Text style={styles.bottombuttonText}>Details</Text>
+            <Pressable style={styles.bottombutton} onPress={PersonalExpenseScreenHandler}>
+              <Text style={styles.bottombuttonText}>Home</Text>
             </Pressable>
 
             <Pressable style={styles.bottombutton} onPress={GroupScreenHandler}>
               <Text style={styles.bottombuttonText}>Groups</Text>
             </Pressable>
+
+            
             
           </View>  
         </Animated.View>
@@ -312,4 +302,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default PersonalExpenseScreen;
+export default ExpenseListScreen;

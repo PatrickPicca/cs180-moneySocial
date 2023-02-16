@@ -4,6 +4,7 @@ import SignInScreen from '../screens/WelcomeScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import PersonalExpense from '../screens/PersonalExpense';
 import groupExpense from '../screens/groupExpense';
+import ExpenseListScreen from '../screens/ExpenseListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 
 
@@ -17,6 +18,7 @@ function stackNavigator() {
                         <Stack.Screen name ="PersonalExpense" component={PersonalExpense}/>
                         
                         <Stack.Screen name ="groupExpense" component={groupExpense}/>
+                        <Stack.Screen name ="ExpenseListScreen" component={ExpenseListScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
