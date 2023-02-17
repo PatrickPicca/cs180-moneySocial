@@ -74,10 +74,10 @@ function ExpenseListScreen(props) {
     }
 
     const GroupScreenHandler = () => {
-      props.navigation.navigate('groupExpense');
+      props.navigation.navigate('groupList');
     }
-    const PersonalExpenseScreenHandler = () => {
-      props.navigation.navigate('PersonalExpense');
+    const HomeScreenHandler = () => {
+      props.navigation.navigate('HomeScreen');
     }
 
     return (
@@ -85,7 +85,10 @@ function ExpenseListScreen(props) {
       <View style={styles.container}>
         <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
           <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
+            <Text style={styles.displayText}>{'Expense 1: $' + myValue}</Text>
+          </View>
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Expense 2: $' + myValue}</Text>
           </View>
         </Animated.View> 
         <Animated.View style={buttonsAnimatedStyle}>
@@ -94,7 +97,7 @@ function ExpenseListScreen(props) {
               <Text style={styles.bottombuttonText}>Logout</Text>
             </Pressable>
 
-            <Pressable style={styles.bottombutton} onPress={PersonalExpenseScreenHandler}>
+            <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
               <Text style={styles.bottombuttonText}>Home</Text>
             </Pressable>
 

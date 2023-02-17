@@ -58,8 +58,8 @@ function WelcomeScreen(props) {
         }
     }
 
-    const PersonalExpenseScreenHandler = () => {
-      props.navigation.navigate('PersonalExpense');
+    const HomeScreenHandler = () => {
+      props.navigation.navigate('HomeScreen');
     }
 
 
@@ -104,7 +104,7 @@ function WelcomeScreen(props) {
           <Text onPress={() => (imagePosition.value = 1)}>X</Text>
         </Animated.View>
 
-        <TouchableOpacity style={styles.button} onPress={PersonalExpenseScreenHandler}>
+        <TouchableOpacity style={styles.button} onPress={HomeScreenHandler}>
             <Text style={styles.buttonText}>Go to PersonalScreen</Text>
         </TouchableOpacity>
 

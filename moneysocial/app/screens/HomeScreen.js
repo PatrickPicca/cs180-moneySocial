@@ -4,6 +4,9 @@ import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 
 import colors from '../config/colors'
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+//import stackNavigator from '../Routes/MainNavigation';
+//import WelcomeScreen from './WelcomeScreen';
 
 const {width, height} = Dimensions.get('window');
 
@@ -11,26 +14,20 @@ function PersonalExpenseScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
-    
-    const myValue1 = 360;
-    const myValue2 = 1050;
-    //Here we will list all groups you are a part of, alongside any current, total expenses you have made for that group.
-      //In the view section you should be able to view / do the following
-          //A list of all groups you are in and the current total expenses for them.
-            //A button option to enter that group to view expenses for the past option.
-            //A button option to expenses by a certain category for the past month.
-            //A button option to make an expense.
+
+    const myValue = 50;
+
+    //Here we will need the entire list of Expense objects, of all categories, from this specific user.
+      //In the view section you should be able to view the following
+          //Current overall total expense for the past month.
+            //This can be display with a number as well as a pie chart breakdown oc categories by color.
           //Button option to view total expense for the past month by category.
           //Button option to view the list of all individual expenses of all time.
+          //Button option to make an expense.
             //This should take you to some Expense screen where you can fill out a varying list of details for that one expense.
-          //Button option to exit the current group.
-          //Display somewhere, probably the header, a code unique to that group that others need to join.
-
     
-    //Need a button that exits the groupExpense screen, taking you to you to the PersonalExpense screen.
-    //Need some join group prompt with textbox where a user can type in a unique group code.
-      //On success that group gets added to the user's list of active groups.
-      //On failure, no group is joined.
+    //We will also need a button that lead to the WelcomeScreen that logs you out.
+    //We will also need to add a group view button, that would take you to the GroupExpense Screen.
 
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
@@ -64,54 +61,121 @@ function PersonalExpenseScreen(props) {
         }
     })
 
+    const loginHandler = () => {
+        imagePosition.value = 0;
+        if(isRegistering){
+            setIsRegistering(false);
+        }
+    }
+    const registerHandler = () => {
+        imagePosition.value = 0;
+        if(!isRegistering){
+            setIsRegistering(true);
+        }
+    }
+
     const WelcomeScreenHandler = () => {
       props.navigation.navigate('WelcomeScreen');
+    }
+
+    const GroupScreenHandler = () => {
+      props.navigation.navigate('groupList');
     }
 
     const ExpenseListScreenHander = () => {
       props.navigation.navigate('ExpenseListScreen');
     }
-    const PersonalExpenseScreenHandler = () => {
-      props.navigation.navigate('PersonalExpense');
-    }
 
-
-    //View should have a list of all groups the user is in, as well as that groups current total expense.
     return (
 
-
       <View style={styles.container}>
+
+        
+
         <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-
           <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Group 1: $' + myValue1}</Text>
+            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Group 2: $' + myValue2}</Text>
-          </View>
+        </Animated.View>
 
-        </Animated.View> 
+
+        
         <Animated.View style={buttonsAnimatedStyle}>
           <View style={styles.bottomScreenHeader}>
             <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
               <Text style={styles.bottombuttonText}>Logout</Text>
             </Pressable>
 
-            <Pressable style={styles.bottombutton} onPress={PersonalExpenseScreenHandler}>
-              <Text style={styles.bottombuttonText}>Home</Text>
-            </Pressable>
-
             <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
               <Text style={styles.bottombuttonText}>Details</Text>
             </Pressable>
 
-            
+            <Pressable style={styles.bottombutton} onPress={GroupScreenHandler}>
+              <Text style={styles.bottombuttonText}>Groups</Text>
+            </Pressable>
             
           </View>  
         </Animated.View>
       </View>
+      
     );
-    
+
+    /*
+    <View style={styles.container}>
+      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+        <Svg height={height} width={width}>
+            <ClipPath id = "clipPathId">
+                <Ellipse cx={width/2} rx={height} ry={height}/>
+            </ClipPath>
+          <Image
+            href={require("../assets/moneysocial-logo.png")}
+            width={width}
+            height = {height-250}
+            clipPath = "url(#clipPathId)"
+          />
+        </Svg>
+        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
+        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
+        </Animated.View>
+      </Animated.View>
+      <View style={styles.bottomContainer}>
+       <Animated.View style={buttonsAnimatedStyle}>
+        <Pressable style={styles.button} onPress={loginHandler}>
+          <Text style={styles.buttonText}>LOG IN</Text>
+        </Pressable>
+       </Animated.View>
+       <Animated.View style={buttonsAnimatedStyle}>
+        <Pressable style={styles.button} onPress={registerHandler}>
+          <Text style={styles.buttonText}>REGISTER</Text>
+        </Pressable>
+       </Animated.View>
+        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="black"
+            style={styles.textInput}
+          />
+          {isRegistering && (
+            <TextInput
+            placeholder="Full Name"
+            placeholderTextColor="black"
+            style={styles.textInput}
+          />
+          )}
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="black"
+            style={styles.textInput}
+            /> 
+          <View style={styles.formButton}>
+            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
+          </View>
+        </Animated.View>
+      </View>
+    </View>
+
+    );
+    */
 }
 
 const styles = StyleSheet.create({
@@ -158,9 +222,15 @@ const styles = StyleSheet.create({
         color: 'white',
         letterSpacing: 0.5
       },
+      displayText: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: 0.5
+      },
       bottomContainer: {
         justifyContent: 'center',
-        height: height / 2,
+        height: height / 8,
       },
       bottomScreenHeader: {
         flexDirection: 'row',
@@ -191,6 +261,27 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
+        
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+      },
+      displayBalance: {
+        backgroundColor: colors.accent,
+        height: 55,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25, //Affects the radius of the corners
+        marginHorizontal: 20,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
