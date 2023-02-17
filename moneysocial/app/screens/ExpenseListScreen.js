@@ -1,21 +1,32 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
-import colors from '../config/colors'
 
+import colors from '../config/colors'
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+//import stackNavigator from '../Routes/MainNavigation';
+//import WelcomeScreen from './WelcomeScreen';
 
 const {width, height} = Dimensions.get('window');
 
-function WelcomeScreen(props) {
+function ExpenseListScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
+    const myValue = 50;
+
+    //This screen should have a filter bar at the top to allow the user to filter all epxenses they are seeing.
+    //Should display a list of all expenses for the user, starting with the most previous.
+      //Display Expense amount, category name, and date for now.
+    //Should be able to scroll????? through the list of expenses.
+
+    //Bottom of the screen should have a bar for screen navigation of a few buttons.
+
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
-        const interpolation = interpolate(imagePosition.value, [0,1], [-height+80, 0])
+        const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
         return {
             transform: [{translateY: withTiming(interpolation, {duration: 1000})}]
         };
@@ -58,12 +69,51 @@ function WelcomeScreen(props) {
         }
     }
 
+    const WelcomeScreenHandler = () => {
+      props.navigation.navigate('WelcomeScreen');
+    }
+
+    const GroupScreenHandler = () => {
+      props.navigation.navigate('groupList');
+    }
     const HomeScreenHandler = () => {
       props.navigation.navigate('HomeScreen');
     }
 
-
     return (
+
+      <View style={styles.container}>
+        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Expense 1: $' + myValue}</Text>
+          </View>
+          <View style={styles.displayBalance}>
+            <Text style={styles.displayText}>{'Expense 2: $' + myValue}</Text>
+          </View>
+        </Animated.View> 
+        <Animated.View style={buttonsAnimatedStyle}>
+          <View style={styles.bottomScreenHeader}>
+            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
+              <Text style={styles.bottombuttonText}>Logout</Text>
+            </Pressable>
+
+            <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
+              <Text style={styles.bottombuttonText}>Home</Text>
+            </Pressable>
+
+            <Pressable style={styles.bottombutton} onPress={GroupScreenHandler}>
+              <Text style={styles.bottombuttonText}>Groups</Text>
+            </Pressable>
+
+            
+            
+          </View>  
+        </Animated.View>
+      </View>
+      
+    );
+
+    /*
     <View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
         <Svg height={height} width={width}>
@@ -77,78 +127,95 @@ function WelcomeScreen(props) {
             clipPath = "url(#clipPathId)"
           />
         </Svg>
-
-
-        <TextInput
+        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
+        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
+        </Animated.View>
+      </Animated.View>
+      <View style={styles.bottomContainer}>
+       <Animated.View style={buttonsAnimatedStyle}>
+        <Pressable style={styles.button} onPress={loginHandler}>
+          <Text style={styles.buttonText}>LOG IN</Text>
+        </Pressable>
+       </Animated.View>
+       <Animated.View style={buttonsAnimatedStyle}>
+        <Pressable style={styles.button} onPress={registerHandler}>
+          <Text style={styles.buttonText}>REGISTER</Text>
+        </Pressable>
+       </Animated.View>
+        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
+          <TextInput
             placeholder="Email"
             placeholderTextColor="black"
             style={styles.textInput}
           />
-         {isRegistering && (
+          {isRegistering && (
             <TextInput
             placeholder="Full Name"
             placeholderTextColor="black"
             style={styles.textInput}
           />
           )}
-        <TextInput
+          <TextInput
             placeholder="Password"
             placeholderTextColor="black"
             style={styles.textInput}
-        /> 
-        <View style={styles.formButton}>
-          <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
-         </View>
-
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-          <Text onPress={() => (imagePosition.value = 1)}>X</Text>
+            /> 
+          <View style={styles.formButton}>
+            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
+          </View>
         </Animated.View>
-
-        <TouchableOpacity style={styles.button} onPress={HomeScreenHandler}>
-            <Text style={styles.buttonText}>Go to PersonalScreen</Text>
-        </TouchableOpacity>
-
-
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-        <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={styles.button} onPress={loginHandler}>
-            <Text style={styles.buttonText}>LOG IN</Text>
-          </Pressable>
-        </Animated.View>
-        <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={styles.button} onPress={registerHandler}>
-            <Text style={styles.buttonText}>REGISTER</Text>
-          </Pressable>
-        </Animated.View>
-
-
       </View>
     </View>
+
     );
+    */
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
         justifyContent: 'flex-end',
         backgroundColor: colors.background,
       },
       button: {
+        
         backgroundColor: colors.primary,
         height: 55,
+        width: 60,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 35,
-        marginHorizontal: 40,
+        marginHorizontal: 5,
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
-        
       },
-
+      bottombutton: {
+        
+        backgroundColor: colors.primary,
+        height: 55,
+        width: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 35,
+        marginHorizontal: 5,
+        marginVertical: 10,
+        borderWidth: 2,
+        borderColor: 'pink'
+      },
       buttonText: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: 0.5
+      },
+      bottombuttonText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: 'white',
+        letterSpacing: 0.5
+      },
+      displayText: {
         fontSize: 20,
         fontWeight: '600',
         color: 'white',
@@ -156,11 +223,12 @@ const styles = StyleSheet.create({
       },
       bottomContainer: {
         justifyContent: 'center',
-        height: height / 2,
+        height: height / 8,
       },
-      topContainer: {
+      bottomScreenHeader: {
+        flexDirection: 'row',
         justifyContent: 'center',
-        height: height -30,
+        height: height / 8,
       },
       textInput: {
         height: 50,
@@ -186,6 +254,27 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
+        
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+      },
+      displayBalance: {
+        backgroundColor: colors.accent,
+        height: 55,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25, //Affects the radius of the corners
+        marginHorizontal: 20,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
@@ -216,4 +305,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default WelcomeScreen;
+export default ExpenseListScreen;
