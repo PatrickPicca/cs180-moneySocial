@@ -1,39 +1,50 @@
 import { StyleSheet, Text, View } from 'react-native';
 import MainNavigation from './app/Routes/MainNavigation';
+import { Amplify, Auth } from 'aws-amplify';
+import {withAuthenticator} from 'aws-amplify-react-native';
+import config from './src/aws-exports';
 
-export default function App() {
-  return <MainNavigation />
-}
+Amplify.configure(config);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-export default function App() 
-{
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>testing</Text>
-      <View
-      style={{
-        flexDirection: 'row',
-        height: 80,
-        padding: 20,
-      }}>
-        <TextInput
-          style={style.input}
-          placeholder="Click here…"
-          onSubmitEditing={Keyboard.dismiss}
-        />
-      <StatusBar style="auto" />
-      
-      </View>
-    </View>
+  <MainNavigation />
   );
-}
+};
 
+const signUpConfig = {
+  header: "My Customized Sign Up",
+  hideAllDefaults: true,
+  signUpFields: [
+    {
+      label: "Name",
+      key: "name",
+      required: true,
+      displayOrder: 1,
+      type: "string",
+    },
+    {
+      label: "Email",
+      key: "email",
+      required: true,
+      displayOrder: 2,
+      type: "string",
+    },
+    {
+      label: "Username",
+      key: "preferred_username",
+      required: true,
+      displayOrder: 3,
+      type: "string",
+    },
+    {
+      label: "Password",
+      key: "password",
+      required: true,
+      displayOrder: 4,
+      type: "password",
+    },
+  ],
+};
+
+export default withAuthenticator(App, {signUpConfig}); 

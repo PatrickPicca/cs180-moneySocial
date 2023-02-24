@@ -22,12 +22,12 @@ function WelcomeScreen(props) {
     });
 
     const buttonsAnimatedStyle = useAnimatedStyle (() =>{
-        const interpolation = interpolate(imagePosition.value, [0,1], [250,0])
-        return {
-            opacity: withTiming(imagePosition.value, 500),
-            transform: [{translateY: withTiming(interpolation, {duration: 1000})}]
-        }
-    })
+      const interpolation = interpolate(imagePosition.value, [0,1], [250,0])
+      return {
+          opacity: withTiming(imagePosition.value, 500),
+          transform: [{translateY: withTiming(interpolation, {duration: 1000})}]
+      }
+  })
 
     const closeButtonContainerStyle = useAnimatedStyle (() =>{
         const interpolation = interpolate(imagePosition.value, [0,1], [180,360])
@@ -58,13 +58,22 @@ function WelcomeScreen(props) {
         }
     }
 
+    const loginFunction = () => {
+      console.log("logging in");
+    }
+    const registerFunction = () => {
+      console.log("registering");
+    }
+
     const HomeScreenHandler = () => {
       props.navigation.navigate('HomeScreen');
     }
 
 
     return (
+
     <View style={styles.container}>
+
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
         <Svg height={height} width={width}>
             <ClipPath id = "clipPathId">
@@ -84,7 +93,7 @@ function WelcomeScreen(props) {
             placeholderTextColor="black"
             style={styles.textInput}
           />
-         {isRegistering && (
+          {isRegistering && (
             <TextInput
             placeholder="Full Name"
             placeholderTextColor="black"
@@ -96,30 +105,42 @@ function WelcomeScreen(props) {
             placeholderTextColor="black"
             style={styles.textInput}
         /> 
-        <View style={styles.formButton}>
-          <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
-         </View>
-
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-          <Text onPress={() => (imagePosition.value = 1)}>X</Text>
-        </Animated.View>
-
-        <TouchableOpacity style={styles.button} onPress={HomeScreenHandler}>
-            <Text style={styles.buttonText}>Go to PersonalScreen</Text>
+        <TouchableOpacity 
+          style={styles.formButton} 
+          onPress={() => {
+          if (isRegistering) {
+          // Call the function for registering
+          registerFunction();
+          } else {
+          // Call the function for logging in
+          loginFunction();
+          }
+        }}>
+          <Text style={styles.buttonText}>
+            {isRegistering ? 'REGISTER' : 'LOG IN'}
+          </Text>
         </TouchableOpacity>
 
 
+        <Animated.View style = {closeButtonContainerStyle}>
+          <TouchableOpacity style={styles.closeButtonContainer} onPress={() => (imagePosition.value = 1)}>
+            <Text>X</Text>
+          </TouchableOpacity>
+        </Animated.View>
+
       </Animated.View>
+
+
       <View style={styles.bottomContainer}>
         <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={styles.button} onPress={loginHandler}>
+          <TouchableOpacity style={styles.button} onPress={loginHandler}>
             <Text style={styles.buttonText}>LOG IN</Text>
-          </Pressable>
+          </TouchableOpacity>
         </Animated.View>
         <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={styles.button} onPress={registerHandler}>
+          <TouchableOpacity style={styles.button} onPress={registerHandler}>
             <Text style={styles.buttonText}>REGISTER</Text>
-          </Pressable>
+          </TouchableOpacity>
         </Animated.View>
 
 
@@ -165,6 +186,7 @@ const styles = StyleSheet.create({
       textInput: {
         height: 50,
         borderWidth: 1,
+        backgroundColor: '#fff',
         borderColor: colors.primary,
         marginHorizontal: 20,
         marginVertical: 10,
