@@ -14,7 +14,6 @@ function stackNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                        <Stack.Screen name ="WelcomeScreen" component={WelcomeScreen}/>
                         <Stack.Screen name ="HomeScreen" component={HomeScreen}/>
                         
                         <Stack.Screen name ="groupList" component={groupList}/>

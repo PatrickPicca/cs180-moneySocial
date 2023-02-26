@@ -8,6 +8,12 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 
+import { API, graphqlOperation } from "aws-amplify";
+import { listExpenses, getExpense } from "../../src/queries";
+import { deleteExpense } from '../../src/mutations';
+import { updateExpense } from '../../src/mutations';
+import { createExpense } from '../../src/mutations';
+
 const {width, height} = Dimensions.get('window');
 
 function PersonalExpenseScreen(props) {
@@ -75,7 +81,7 @@ function PersonalExpenseScreen(props) {
     }
 
     const WelcomeScreenHandler = () => {
-      props.navigation.navigate('WelcomeScreen');
+    //  props.navigation.navigate('WelcomeScreen');
     }
 
     const GroupScreenHandler = () => {
@@ -85,6 +91,74 @@ function PersonalExpenseScreen(props) {
     const ExpenseListScreenHander = () => {
       props.navigation.navigate('ExpenseListScreen');
     }
+
+    const createExpenseHandler = () => {
+      const theinput =
+      { 
+        id: 0,
+        amount: 10.0,
+        category: "",
+        description: "",
+        userID: "william" 
+      }
+      console.log(theinput);
+      graphqlOperation(createExpense, theinput)
+      console.log("Created expense?");
+      const theinput2 =
+      { 
+        filter: null,
+        limit: 10,
+        nextToken: null
+      }
+      const expenseData = graphqlOperation(listExpenses, theinput2);
+      console.log(expenseData);
+    }
+
+    /*
+    const newExpense = await API.graphql({
+      query: createExpense,
+      variables: {
+          input: {
+      "amount": 123.45,
+      "category": "Lorem ipsum dolor sit amet",
+      "description": "Lorem ipsum dolor sit amet",
+      "groupID": "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
+      "userID": "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d"
+      }
+      }
+    });
+    const updatedExpense = await API.graphql({
+      query: updateExpense,
+      variables: {
+          input: {
+      "amount": 123.45,
+      "category": "Lorem ipsum dolor sit amet",
+      "description": "Lorem ipsum dolor sit amet",
+      "groupID": "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
+      "userID": "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d"
+      }
+        }
+    });
+    const deletedExpense = await API.graphql({
+      query: deleteExpense,
+      variables: {
+          input: {
+              id: "YOUR_RECORD_ID"
+          }
+      }
+     }); 
+      // List all items
+      const allExpenses = await API.graphql({
+        query: listExpenses
+      });
+      console.log(allExpense);
+      // Get a specific item
+      const oneExpense = await API.graphql({
+        query: getExpense,
+        variables: { id: 'YOUR_RECORD_ID' }
+      });
+*/
+
 
     return (
 
@@ -96,6 +170,9 @@ function PersonalExpenseScreen(props) {
           <View style={styles.displayBalance}>
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
+          <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
+            <Text style={styles.bottombuttonText}>Create Expense</Text>
+          </Pressable>
         </Animated.View>
 
 

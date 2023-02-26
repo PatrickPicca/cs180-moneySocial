@@ -6,7 +6,13 @@ import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, wit
 import colors from '../config/colors'
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
-//import WelcomeScreen from './WelcomeScreen';
+//import WelcomeScreen from './WelcomeScreen';\
+
+import { API } from "aws-amplify";
+import { listExpenses, getExpense } from "../../src/queries";
+import { deleteExpense } from '../../src/mutations';
+import { updateExpense } from '../../src/mutations';
+import { createExpense } from '../../src/mutations';
 
 const {width, height} = Dimensions.get('window');
 
@@ -70,7 +76,7 @@ function ExpenseListScreen(props) {
     }
 
     const WelcomeScreenHandler = () => {
-      props.navigation.navigate('WelcomeScreen');
+    //  props.navigation.navigate('WelcomeScreen');
     }
 
     const GroupScreenHandler = () => {

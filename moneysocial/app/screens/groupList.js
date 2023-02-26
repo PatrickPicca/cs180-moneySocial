@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
+import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, FlatList, ScrollView } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 
 import colors from '../config/colors'
+
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -14,6 +16,9 @@ function PersonalExpenseScreen(props) {
     
     const myValue1 = 360;
     const myValue2 = 1050;
+
+
+    
     //Here we will list all groups you are a part of, alongside any current, total expenses you have made for that group.
       //In the view section you should be able to view / do the following
           //A list of all groups you are in and the current total expenses for them.
@@ -65,8 +70,11 @@ function PersonalExpenseScreen(props) {
     })
 
     const WelcomeScreenHandler = () => {
-      props.navigation.navigate('WelcomeScreen');
+    //  props.navigation.navigate('WelcomeScreen');
     }
+    const groupListHandler = () => {
+      console.log("logging in");
+      }
 
     const ExpenseListScreenHander = () => {
       props.navigation.navigate('ExpenseListScreen');
@@ -76,43 +84,88 @@ function PersonalExpenseScreen(props) {
     }
 
 
+
+
+    const DATA = [
+      {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        title: 'First Item',
+      },
+      {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        title: 'Second Item',
+      },
+      {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        title: 'Third Item',
+      },
+      {
+        id: '5869d72',
+        title: '6th Item',
+      },
+    ];
+
+    const Item = ({title}) => (
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+        <Pressable style={styles.bottombutton} onPress={groupListHandler}>
+          <Text style={styles.bottombuttonText}>Logout</Text>
+        </Pressable>
+
+      </View>
+    );
+
     //View should have a list of all groups the user is in, as well as that groups current total expense.
     return (
+      
+      <View style={{flex:1}}>onPress
+        <FlatList
+          data={DATA}
+          renderItem={({item}) => <Item title={item.title} />}
+          keyExtractor={item => item.id}
+        />
+        <View style={styles.container}>
 
+          <Animated.View style={buttonsAnimatedStyle}>
+            <View style={styles.bottomScreenHeader}>
+              <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
+                <Text style={styles.bottombuttonText}>Logout</Text>
+              </Pressable>
 
-      <View style={styles.container}>
-        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+              <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
+                <Text style={styles.bottombuttonText}>Home</Text>
+              </Pressable>
 
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Group 1: $' + myValue1}</Text>
-          </View>
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Group 2: $' + myValue2}</Text>
-          </View>
+              <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
+                <Text style={styles.bottombuttonText}>Details</Text>
+              </Pressable>
 
-        </Animated.View> 
-        <Animated.View style={buttonsAnimatedStyle}>
-          <View style={styles.bottomScreenHeader}>
-            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Logout</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Home</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
-              <Text style={styles.bottombuttonText}>Details</Text>
-            </Pressable>
-
-            
-            
-          </View>  
-        </Animated.View>
+              
+              
+            </View>  
+          </Animated.View>
+        </View>
       </View>
     );
     
 }
+
+/* 
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.topContainer}>
+
+              <View style={styles.displayBalance}>
+                <Text style={styles.displayText}>{'Group 1: $' + myValue1}</Text>
+              </View>
+              <View style={styles.displayBalance}>
+                <Text style={styles.displayText}>{'Group 2: $' + myValue2}</Text>
+              </View>
+            </View>
+          </ScrollView>
+          <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+
+          </Animated.View> 
+*/
 
 const styles = StyleSheet.create({
     container: {
@@ -194,6 +247,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+      },
+      topContainer: {
+        justifyContent: 'center',
+        height: height / 4,
+        top: 50,
       },
       formInputContainer: {
         marginBottom: 70,

@@ -13,6 +13,7 @@ function WelcomeScreen(props) {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
+    const [user, setUser] = useState(null);
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         const interpolation = interpolate(imagePosition.value, [0,1], [-height+80, 0])
