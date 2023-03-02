@@ -6,6 +6,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import HomeScreen from '../screens/HomeScreen';
 import groupList from '../screens/groupList';
 import ExpenseListScreen from '../screens/ExpenseListScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -16,6 +17,7 @@ import { setStatusBarBackgroundColor } from 'expo-status-bar';
 const homeName = 'Home';
 const detailsName = 'Details';
 const groupsName = 'Groups';
+const settingsName = 'Settings'
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +37,8 @@ export default function MainNavigation() {
                             iconName = focused ? 'list' : 'list-outline';
                         } else if (rn == groupsName){
                             iconName = focused ? 'person' : 'person-outline';
+                        } else if (rn == settingsName){
+                            iconName = focused ? 'settings' : 'settings-outline';
                         }
 
                         return <Ionicons name={iconName} size={size} color={color}/>
@@ -53,6 +57,7 @@ export default function MainNavigation() {
                         <Tab.Screen name ={homeName} component={HomeScreen}/>
                         <Tab.Screen name ={detailsName} component={groupList}/>
                         <Tab.Screen name ={groupsName} component={ExpenseListScreen}/>
+                        <Tab.Screen name ={settingsName} component={SettingsScreen}/>
             </Tab.Navigator>
         </NavigationContainer>
     );
