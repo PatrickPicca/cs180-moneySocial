@@ -91,24 +91,6 @@ function ExpenseListScreen(props) {
             <Text style={styles.displayText}>{'Expense 2: $' + myValue}</Text>
           </View>
         </Animated.View> 
-        <Animated.View style={buttonsAnimatedStyle}>
-          <View style={styles.bottomScreenHeader}>
-            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Logout</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Home</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={GroupScreenHandler}>
-              <Text style={styles.bottombuttonText}>Groups</Text>
-            </Pressable>
-
-            
-            
-          </View>  
-        </Animated.View>
       </View>
       
     );
@@ -274,7 +256,7 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
-        
+        top: +50,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,

@@ -91,24 +91,6 @@ function PersonalExpenseScreen(props) {
           </View>
 
         </Animated.View> 
-        <Animated.View style={buttonsAnimatedStyle}>
-          <View style={styles.bottomScreenHeader}>
-            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Logout</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={HomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Home</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
-              <Text style={styles.bottombuttonText}>Details</Text>
-            </Pressable>
-
-            
-            
-          </View>  
-        </Animated.View>
       </View>
     );
     
@@ -218,7 +200,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 20,
         top: -25
-    }
+    },
+    displayBalance: {
+      backgroundColor: colors.accent,
+      height: 55,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 25, //Affects the radius of the corners
+      marginHorizontal: 20,
+      marginVertical: 10,
+      borderWidth: 1,
+      borderColor: 'white',
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      top: +50,
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    formInputContainer: {
+      marginBottom: 70,
+      ...StyleSheet.absoluteFill,
+      zIndex: -1,
+      justifyContent: 'center'
+    },
 })
 
 export default PersonalExpenseScreen;
