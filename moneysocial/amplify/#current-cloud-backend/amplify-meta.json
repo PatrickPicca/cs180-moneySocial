@@ -11,5 +11,85 @@
       "StackId": "arn:aws:cloudformation:us-west-1:206284797132:stack/amplify-moneysocal-staging-22006/46c5b8d0-a369-11ed-a422-062f4e92c0fb",
       "AmplifyAppId": "d4qzb7rx6bjg1"
     }
+  },
+  "api": {
+    "moneysocial": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "MoneySocial"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authMoneySocial"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "davam6tfujgmtbi3xjpi7pcukq",
+        "GraphQLAPIEndpointOutput": "https://vcbhayl22zeizmebne6hwv6l74.appsync-api.us-west-1.amazonaws.com/graphql"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-02-26T00:03:21.247Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-moneysocal-staging-22006-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apimoneysocial"
+      },
+      "lastPushDirHash": "Y6rtrCZmhEsUowhaIZGDd76DFBY="
+    }
+  },
+  "auth": {
+    "MoneySocial": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 6,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL",
+          "NAME",
+          "PREFERRED_USERNAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-west-1_Kne6C6Qru",
+        "AppClientIDWeb": "4frng0n6pjreqequ2gp5rf6d43",
+        "AppClientID": "40l03s2niih5k0bp8ehfagimg6",
+        "IdentityPoolId": "us-west-1:327a684f-9352-4204-a412-2f5be3fc420a",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-1:206284797132:userpool/us-west-1_Kne6C6Qru",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "MoneySocial"
+      },
+      "lastPushTimeStamp": "2023-02-26T00:03:20.757Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-moneysocal-staging-22006-deployment/amplify-cfn-templates/auth/MoneySocial-cloudformation-template.json",
+        "logicalId": "authMoneySocial"
+      }
+    }
   }
 }
