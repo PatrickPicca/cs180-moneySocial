@@ -108,6 +108,19 @@ function PersonalExpenseScreen(props) {
       });
     }
 
+    const createGroupHandler = async () => {
+      const newTodo = await API.graphql({ 
+        query: mutations.createGroup, 
+        variables: { input: {
+          id: "test is",
+          name: "test name",
+          groupKey: "test key",
+        } }
+      });
+    }
+
+    
+
     return (
 
       <View style={styles.container}>
@@ -117,7 +130,13 @@ function PersonalExpenseScreen(props) {
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
           <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
+            
             <Text style={styles.bottombuttonText}>Create Expense</Text>
+          </Pressable>
+
+          <Pressable style={styles.bottombutton} onPress={createGroupHandler}>
+            
+            <Text style={styles.bottombuttonText}>Create Group</Text>
           </Pressable>
         </Animated.View>
       </View>
