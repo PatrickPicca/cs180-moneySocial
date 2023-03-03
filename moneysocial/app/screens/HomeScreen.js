@@ -8,12 +8,12 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 
-import { API, graphqlOperation } from "aws-amplify";
-import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
-import { createUser, deleteExpense } from '../../src/mutations';
-import { updateExpense } from '../../src/mutations';
-import { createExpense } from '../../src/mutations';
-import { getUser } from '../../src/queries';
+//import { API, graphqlOperation } from "aws-amplify";
+//import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
+//import { createUser, deleteExpense } from '../../src/mutations';
+//import { updateExpense } from '../../src/mutations';
+//import { createExpense } from '../../src/mutations';
+//import { getUser } from '../../src/queries';
 
 const {width, height} = Dimensions.get('window');
 
