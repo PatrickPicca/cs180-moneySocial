@@ -8,12 +8,15 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 
-//import { API, graphqlOperation } from "aws-amplify";
-//import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
+import { API, graphqlOperation } from "aws-amplify";
+import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
 //import { createUser, deleteExpense } from '../../src/mutations';
 //import { updateExpense } from '../../src/mutations';
-//import { createExpense } from '../../src/mutations';
+import { createExpense } from '../../src/mutations';
+import * as mutations from '../../src/mutations';
 //import { getUser } from '../../src/queries';
+import awsconfig from '../../src/aws-exports';
+API.configure(awsconfig);
 
 const {width, height} = Dimensions.get('window');
 
@@ -94,42 +97,19 @@ function PersonalExpenseScreen(props) {
       props.navigation.navigate('ExpenseListScreen');
     }
 
-    const createExpenseHandler = () => {
-
-      const theinput =
-      { 
-        id: 0,
-        amount: 10.0,
-        category: "",
-        description: "",
-        userID: "william" 
-      }
-      console.log(theinput);
-      graphqlOperation(createExpense, theinput)
-      console.log("Created expense?");
-      const theinput2 =
-      { 
-        filter: null,
-        limit: 10,
-        nextToken: null
-      }
-      const expenseData = graphqlOperation(listExpenses, theinput2);
-      console.log(expenseData);
+    const testing = async () => {
+      const newTodo = await API.graphql({ 
+        query: mutations.createExpense, 
+        variables: { input: {
+          amount: 500,
+          category: "test category",
+          description: "test description",
+          groupID: "Null",
+          userID: 1
+        } }
+      });
     }
 
-
-    const testHandler = () => {
-      const theinput =
-      { 
-        filter: {userID: {contains: "4"}}
-      }
-      console.log(theinput);
-   //   graphqlOperation(createExpense, theinput);
-   //   console.log(graphqlOperation(listExpenses, theinput));
-      const pageData = API.graphql(graphqlOperation(listExpenses, theinput));
-    //  console.log(pageData.data.items[1].amount);
-
-    }
 
     /*
     const newExpense = await API.graphql({
@@ -187,7 +167,7 @@ function PersonalExpenseScreen(props) {
           <View style={styles.displayBalance}>
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
-          <Pressable style={styles.bottombutton} onPress={testHandler}>
+          <Pressable style={styles.bottombutton} onPress={testing}>
             <Text style={styles.bottombuttonText}>Create Expense</Text>
           </Pressable>
         </Animated.View>
