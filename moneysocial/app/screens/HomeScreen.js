@@ -7,6 +7,15 @@ import colors from '../config/colors'
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
+import { API, graphqlOperation } from "aws-amplify";
+import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
+//import { createUser, deleteExpense } from '../../src/mutations';
+//import { updateExpense } from '../../src/mutations';
+import { createExpense } from '../../src/mutations';
+import * as mutations from '../../src/mutations';
+//import { getUser } from '../../src/queries';
+import awsconfig from '../../src/aws-exports';
+API.configure(awsconfig);
 
 const {width, height} = Dimensions.get('window');
 
@@ -86,16 +95,30 @@ function PersonalExpenseScreen(props) {
       props.navigation.navigate('ExpenseListScreen');
     }
 
+    const createExpenseHandler = async () => {
+      const newTodo = await API.graphql({ 
+        query: mutations.createExpense, 
+        variables: { input: {
+          amount: 500,
+          category: "test category",
+          description: "test description",
+          groupID: "Null",
+          userID: 1
+        } }
+      });
+    }
+
     return (
 
       <View style={styles.container}>
-
-        
 
         <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
           <View style={styles.displayBalance}>
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
+          <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
+            <Text style={styles.bottombuttonText}>Create Expense</Text>
+          </Pressable>
         </Animated.View>
       </View>
       
@@ -262,7 +285,7 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
-        top: +50,
+        top: +10,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
