@@ -112,7 +112,7 @@ function PersonalExpenseScreen(props) {
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          id: "test is",
+          id: 0,
           name: "test name",
           groupKey: "test key",
         } }
