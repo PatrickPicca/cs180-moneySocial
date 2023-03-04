@@ -8,6 +8,12 @@ import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
+import { API, graphqlOperation } from "aws-amplify";
+
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
+import awsconfig from '../../src/aws-exports';
+API.configure(awsconfig);
 
 const {width, height} = Dimensions.get('window');
 
@@ -17,6 +23,7 @@ function PersonalExpenseScreen() {
     const [isRegistering, setIsRegistering] = useState(false);
 
     const myValue = 50;
+
     const navigation = useNavigation();
 
     //Here we will need the entire list of Expense objects, of all categories, from this specific user.
@@ -88,6 +95,40 @@ function PersonalExpenseScreen() {
       props.navigation.navigate('ExpenseListScreen');
     }
 
+    const createExpenseHandler = async () => {
+      const variables = {
+        input: {
+          amount: 500, 
+          description: "This is the first test expense",
+          userID: '7914cf82-80b1-4958-b7e3-8498d5833010',
+          groupID: "Null",
+          category: "Test Cateogry"
+        },
+      };
+      const newTodo = await API.graphql({ query: mutations.createExpense, variables});
+    }
+
+    const createGroupHandler = async (groupCounting) => {
+      const newTodo = await API.graphql({ 
+        query: mutations.createGroup, 
+        variables: { input: {
+          name: "A group",
+          groupKey: "A key",
+        } }
+      });
+    }
+
+    const getGroupKeyHandler = async () => {
+      const variables = {
+        id: '96631528-0e14-4b5b-b71d-807f2124be60',
+      };
+      const newTodo = await API.graphql({ query: queries.getGroupKey,  variables});
+      const theKey = newTodo.data.getGroup.groupKey;
+      console.log(theKey);
+    }
+
+    
+   
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
     }
@@ -96,12 +137,22 @@ function PersonalExpenseScreen() {
 
       <View style={styles.container}>
 
-        
-
         <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
           <View style={styles.displayBalance}>
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
+          <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
+            <Text style={styles.bottombuttonText}>Create Expense</Text>
+          </Pressable>
+
+          <Pressable style={styles.bottombutton} onPress={createGroupHandler}>
+            <Text style={styles.bottombuttonText}>Create Group</Text>
+          </Pressable>
+
+          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
+            <Text style={styles.bottombuttonText}>Get Group</Text>
+          </Pressable>
+
         </Animated.View>
         <TouchableOpacity style={styles.button} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
@@ -271,7 +322,7 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
-        top: +50,
+        top: +10,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
