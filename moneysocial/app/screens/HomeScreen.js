@@ -8,12 +8,9 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 import { API, graphqlOperation } from "aws-amplify";
-import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
-//import { createUser, deleteExpense } from '../../src/mutations';
-//import { updateExpense } from '../../src/mutations';
-import { createExpense } from '../../src/mutations';
-import * as mutations from '../../src/mutations';
-import * as queries from '../../src/queries';
+
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 
@@ -25,6 +22,9 @@ function PersonalExpenseScreen(props) {
     const [isRegistering, setIsRegistering] = useState(false);
 
     const myValue = 50;
+    //const [groupVal, setGroupVal] = useState(1);
+    let groupVal = 1;
+    let looping = true;
 
     //Here we will need the entire list of Expense objects, of all categories, from this specific user.
       //In the view section you should be able to view the following
@@ -96,49 +96,38 @@ function PersonalExpenseScreen(props) {
     }
 
     const createExpenseHandler = async () => {
-      const newTodo = await API.graphql({ 
-        query: mutations.createExpense, 
-        variables: { input: {
-          amount: 500,
-          category: "test category",
-          description: "test description",
+      const variables = {
+        input: {
+          amount: 500, 
+          description: "This is the first test expense",
+          userID: '7914cf82-80b1-4958-b7e3-8498d5833010',
           groupID: "Null",
-          userID: 1
-        } }
-      });
+          category: "Test Cateogry"
+        },
+      };
+      const newTodo = await API.graphql({ query: mutations.createExpense, variables});
     }
 
-    const createGroupHandler = async () => {
+    const createGroupHandler = async (groupCounting) => {
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          groupCounter: 3,
-          name: "third group",
-          groupKey: "another key",
+          name: "A group",
+          groupKey: "A key",
         } }
       });
     }
 
-    const createGroupHandlerWithUniqueID = async () => {
-      const variables = {
-          filter: {
-            attributeType:id
-          }
-      };
-      const newTodo = await API.graphql({ query: queries.listGroups,  variables});
-      const theGroups = newTodo.data.getGroup.groupKey;
-      console.log(theGroups);
-    }
-
-
     const getGroupKeyHandler = async () => {
       const variables = {
-        id: 10,
+        id: '96631528-0e14-4b5b-b71d-807f2124be60',
       };
       const newTodo = await API.graphql({ query: queries.getGroupKey,  variables});
       const theKey = newTodo.data.getGroup.groupKey;
       console.log(theKey);
     }
+
+    
     
 
     return (
@@ -157,7 +146,7 @@ function PersonalExpenseScreen(props) {
             <Text style={styles.bottombuttonText}>Create Group</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={createGroupHandlerWithUniqueID}>
+          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
             <Text style={styles.bottombuttonText}>Get Group</Text>
           </Pressable>
 
