@@ -112,12 +112,24 @@ function PersonalExpenseScreen(props) {
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          id: 10,
-          name: "test name",
-          groupKey: "test key",
+          groupCounter: 3,
+          name: "third group",
+          groupKey: "another key",
         } }
       });
     }
+
+    const createGroupHandlerWithUniqueID = async () => {
+      const variables = {
+          filter: {
+            attributeType:id
+          }
+      };
+      const newTodo = await API.graphql({ query: queries.listGroups,  variables});
+      const theGroups = newTodo.data.getGroup.groupKey;
+      console.log(theGroups);
+    }
+
 
     const getGroupKeyHandler = async () => {
       const variables = {
@@ -145,7 +157,7 @@ function PersonalExpenseScreen(props) {
             <Text style={styles.bottombuttonText}>Create Group</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
+          <Pressable style={styles.bottombutton} onPress={createGroupHandlerWithUniqueID}>
             <Text style={styles.bottombuttonText}>Get Group</Text>
           </Pressable>
 
