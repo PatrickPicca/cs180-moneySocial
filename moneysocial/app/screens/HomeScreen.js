@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
@@ -8,8 +8,7 @@ import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
-import { API, graphqlOperation } from "aws-amplify";
-
+import { API, graphqlOperation, Auth } from "aws-amplify";
 import * as mutations from '../../src/graphql/mutations';
 import * as queries from '../../src/graphql/queries';
 import awsconfig from '../../src/aws-exports';
@@ -26,18 +25,29 @@ function PersonalExpenseScreen() {
 
     const navigation = useNavigation();
 
-    //Here we will need the entire list of Expense objects, of all categories, from this specific user.
-      //In the view section you should be able to view the following
-          //Current overall total expense for the past month.
-            //This can be display with a number as well as a pie chart breakdown oc categories by color.
-          //Button option to view total expense for the past month by category.
-          //Button option to view the list of all individual expenses of all time.
-          //Button option to make an expense.
-            //This should take you to some Expense screen where you can fill out a varying list of details for that one expense.
-    
-    //We will also need a button that lead to the WelcomeScreen that logs you out.
-    //We will also need to add a group view button, that would take you to the GroupExpense Screen.
 
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const userData = await API.graphql(graphqlOperation(queries.listUsers));
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          const userData2 = await API.graphql(
+            graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+          );
+          console.log(authUser.attributes.sub);
+          setUser(authUser.attributes.sub);
+          //console.log(userData.data.listUsers.items[0]);
+        } catch (error) {
+          console.log('Error fetching user data:', error);
+        }
+      }; 
+      fetchUser();
+    }, []);
+    //user.id
+    //user.expenses
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
@@ -98,9 +108,9 @@ function PersonalExpenseScreen() {
     const createExpenseHandler = async () => {
       const variables = {
         input: {
-          amount: 500, 
-          description: "This is the first test expense",
-          userID: '7914cf82-80b1-4958-b7e3-8498d5833010',
+          amount: 1000, 
+          description: "This is a new  test expense",
+          userID: user,
           groupID: "Null",
           category: "Test Cateogry"
         },
@@ -120,10 +130,12 @@ function PersonalExpenseScreen() {
 
     const getGroupKeyHandler = async () => {
       const variables = {
-        id: '96631528-0e14-4b5b-b71d-807f2124be60',
+        input:{
+         groupkey: "A key",
+        },
       };
-      const newTodo = await API.graphql({ query: queries.getGroupKey,  variables});
-      const theKey = newTodo.data.getGroup.groupKey;
+      const newTodo = await API.graphql({ query: queries.getGroup,  variables});
+      const theKey = newTodo.data.getGroup.name;
       console.log(theKey);
     }
 
