@@ -13,7 +13,7 @@ import { listExpenses, getExpense, expensesByUserID } from "../../src/queries";
 //import { updateExpense } from '../../src/mutations';
 import { createExpense } from '../../src/mutations';
 import * as mutations from '../../src/mutations';
-//import { getUser } from '../../src/queries';
+import * as queries from '../../src/queries';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 
@@ -112,13 +112,21 @@ function PersonalExpenseScreen(props) {
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          id: 0,
+          id: 10,
           name: "test name",
           groupKey: "test key",
         } }
       });
     }
 
+    const getGroupKeyHandler = async () => {
+      const variables = {
+        id: 10,
+      };
+      const newTodo = await API.graphql({ query: queries.getGroupKey,  variables});
+      const theKey = newTodo.data.getGroup.groupKey;
+      console.log(theKey);
+    }
     
 
     return (
@@ -130,14 +138,17 @@ function PersonalExpenseScreen(props) {
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
           <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
-            
             <Text style={styles.bottombuttonText}>Create Expense</Text>
           </Pressable>
 
           <Pressable style={styles.bottombutton} onPress={createGroupHandler}>
-            
             <Text style={styles.bottombuttonText}>Create Group</Text>
           </Pressable>
+
+          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
+            <Text style={styles.bottombuttonText}>Get Group</Text>
+          </Pressable>
+
         </Animated.View>
       </View>
       
