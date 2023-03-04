@@ -1,21 +1,23 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
+import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-
-import colors from '../config/colors'
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CreateExpenseScreen from './createExpenseScreen';
+import colors from '../config/colors';
+import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 
 const {width, height} = Dimensions.get('window');
 
-function PersonalExpenseScreen(props) {
+function PersonalExpenseScreen() {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
     const myValue = 50;
+    const navigation = useNavigation();
 
     //Here we will need the entire list of Expense objects, of all categories, from this specific user.
       //In the view section you should be able to view the following
@@ -86,6 +88,10 @@ function PersonalExpenseScreen(props) {
       props.navigation.navigate('ExpenseListScreen');
     }
 
+    const handleCreateExpense = () => {
+      navigation.navigate(CreateExpenseScreen);
+    }
+
     return (
 
       <View style={styles.container}>
@@ -97,6 +103,9 @@ function PersonalExpenseScreen(props) {
             <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
           </View>
         </Animated.View>
+        <TouchableOpacity style={styles.button} onPress = {handleCreateExpense}>
+          <Ionicons name="add" />
+        </TouchableOpacity>
       </View>
       
     );

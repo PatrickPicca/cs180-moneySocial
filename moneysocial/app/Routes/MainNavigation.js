@@ -23,8 +23,8 @@ const Tab = createBottomTabNavigator();
 
 export default function MainNavigation() {
     return (
-        <NavigationContainer>
             <Tab.Navigator 
+            
                 initialRouteName={homeName}
                 screenOptions={({route}) => ({
                     tabBarIcon: ({ focused, color, size}) => {
@@ -43,6 +43,9 @@ export default function MainNavigation() {
 
                         return <Ionicons name={iconName} size={size} color={color}/>
                 },
+
+                    headerShown: false
+    
                 })}
                 tabBarOptions={{
                     activeTintColor: colors.primary,
@@ -59,6 +62,5 @@ export default function MainNavigation() {
                         <Tab.Screen name ={groupsName} component={ExpenseListScreen}/>
                         <Tab.Screen name ={settingsName} component={SettingsScreen}/>
             </Tab.Navigator>
-        </NavigationContainer>
     );
 }
