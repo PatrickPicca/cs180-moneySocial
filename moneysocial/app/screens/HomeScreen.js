@@ -142,7 +142,7 @@ function PersonalExpenseScreen() {
       console.log(newTodo);
     }
 
-    
+     
    
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
