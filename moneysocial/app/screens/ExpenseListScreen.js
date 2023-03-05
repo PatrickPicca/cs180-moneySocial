@@ -3,19 +3,74 @@ import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, 
 import colors from '../config/colors';
 
 const GroupData = [
-  {name: 'Soda', value: 2.99 },
-  {name: 'Chips', value: 1.99 },
+  {id: '1', name: 'Soda', value: 2.99 },
+  {id: '2', name: 'Chips', value: 1.99 },
 ];
 
 export default function MyComponent() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [data, setData] = useState(GroupData);
+  const [editingId, setEditingId] = useState(null);
+  const [name, setName] = useState('');
+  const [value, setValue] = useState('');
+
   const renderItem = ({ item }) => (
     <View style={styles.displayBalance}>
-      <Text style={styles.displayText}>{`${item.name}: $${item.value}`}</Text>
+      {editingId === item.id ? (
+        <View style={styles.editContainer}>
+          <TextInput
+            style={styles.editInput}
+            placeholder="Enter new name"
+            value={name}
+            onChangeText={text => setName(text)}
+          />
+          <TextInput
+            style={styles.editInput}
+            placeholder="Enter new value"
+            value={value}
+            onChangeText={text => setValue(text)}
+          />
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={() => handleUpdate(item.id)}
+          >
+            <Text style={styles.updateButtonText}>Update</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.itemContainer}>
+          <Text style={styles.displayText}>{`${item.name}: $${item.value}`}</Text>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => handleEdit(item)}
+          >
+            <Text style={styles.editButtonText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 
-  const filteredData = GroupData.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  const handleEdit = (item) => {
+    setEditingId(item.id);
+    setName(item.name);
+    setValue(item.value.toString());
+  };
+
+  const handleUpdate = (id) => {
+    const updatedData = data.map((item) => {
+      if (item.id === id) {
+        return { ...item, name, value: parseFloat(value) };
+      }
+      return item;
+    });
+    setData(updatedData);
+    setEditingId(null);
+    setName('');
+    setValue('');
+  };
+
+  const filteredData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,9 +102,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
   },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   displayText: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  editButton: {
+    backgroundColor: colors.secondary,
+    padding: 10,
+    borderRadius: 5,
+  },
+  editButtonText: {
+    color: 'white',
+    fontWeight: 'bold'
   },
   searchContainer: {
     paddingHorizontal: 20,
@@ -70,4 +139,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingTop: 20,
   },
-});
+})
