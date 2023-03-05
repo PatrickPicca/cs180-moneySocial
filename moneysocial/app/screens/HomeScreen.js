@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,10 +8,9 @@ import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
-import { API, graphqlOperation } from "aws-amplify";
-
-import * as mutations from '../../src/graphql/mutations';
-import * as queries from '../../src/graphql/queries';
+import { API, graphqlOperation, Auth } from "aws-amplify";
+import * as mutations from '../../src/aws-exports';
+import * as queries from '../../src/aws-exports';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 
@@ -22,22 +21,33 @@ function PersonalExpenseScreen() {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
-    const myValue = 50;
+    const myValue1 = 1500;
+    const myValue2 = 50;
+    const myName = 'User';
 
     const navigation = useNavigation();
 
-    //Here we will need the entire list of Expense objects, of all categories, from this specific user.
-      //In the view section you should be able to view the following
-          //Current overall total expense for the past month.
-            //This can be display with a number as well as a pie chart breakdown oc categories by color.
-          //Button option to view total expense for the past month by category.
-          //Button option to view the list of all individual expenses of all time.
-          //Button option to make an expense.
-            //This should take you to some Expense screen where you can fill out a varying list of details for that one expense.
-    
-    //We will also need a button that lead to the WelcomeScreen that logs you out.
-    //We will also need to add a group view button, that would take you to the GroupExpense Screen.
-
+    //user represents the user id used to query and mutate anything related to the currently logged in user.
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          const userData2 = await API.graphql(
+            graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+          );
+          console.log(authUser.attributes.sub);
+          setUser(authUser.attributes.sub);
+        } catch (error) {
+          console.log('Error fetching user data:', error);
+        }
+      }; 
+      fetchUser();
+    }, []);
+    //user.id
+    //user.expenses
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
@@ -98,9 +108,9 @@ function PersonalExpenseScreen() {
     const createExpenseHandler = async () => {
       const variables = {
         input: {
-          amount: 500, 
-          description: "This is the first test expense",
-          userID: '7914cf82-80b1-4958-b7e3-8498d5833010',
+          amount: 1000, 
+          description: "This is a new  test expense",
+          userID: user,
           groupID: "Null",
           category: "Test Cateogry"
         },
@@ -109,25 +119,32 @@ function PersonalExpenseScreen() {
     }
 
     const createGroupHandler = async (groupCounting) => {
+
+      //Have query to attempt to locate any group with the passed in groupKey from user. If not in use, create group.
+      //If valid, fails to create to group.
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          name: "A group",
-          groupKey: "A key",
+          name: "A test group",
+          groupKey: "A test key",
+          //Add the current user to that group
         } }
       });
     }
 
     const getGroupKeyHandler = async () => {
       const variables = {
-        id: '96631528-0e14-4b5b-b71d-807f2124be60',
+        filter: {
+          groupKey : {contains: "A test key"}
+        },
       };
-      const newTodo = await API.graphql({ query: queries.getGroupKey,  variables});
-      const theKey = newTodo.data.getGroup.groupKey;
-      console.log(theKey);
+      const newTodo = await API.graphql({ query: queries.listGroups,  variables});
+      //const theName = newTodo.data.getGroup.name;
+      //Returns just the name of the singular object returned
+      console.log(newTodo.data.listGroups.items[0].name);
     }
 
-    
+     
    
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
@@ -135,111 +152,53 @@ function PersonalExpenseScreen() {
 
     return (
 
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
-        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
-          </View>
-          <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
-            <Text style={styles.bottombuttonText}>Create Expense</Text>
+        <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
+        <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
+        <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
+
+        <View style={styles.bottomContainer}>
+          <Pressable style={styles.button} onPress={createExpenseHandler}>
+            <Text style={styles.buttonText}>Create Expense</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={createGroupHandler}>
-            <Text style={styles.bottombuttonText}>Create Group</Text>
+          <Pressable style={styles.button} onPress={createGroupHandler}>
+            <Text style={styles.buttonText}>Create Group</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
-            <Text style={styles.bottombuttonText}>Get Group</Text>
+          <Pressable style={styles.button} onPress={getGroupKeyHandler}>
+            <Text style={styles.buttonText}>Get Group</Text>
           </Pressable>
+        </View>
 
-        </Animated.View>
-        <TouchableOpacity style={styles.button} onPress = {handleCreateExpense}>
+        <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       
     );
-
-    /*
-    <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height} width={width}>
-            <ClipPath id = "clipPathId">
-                <Ellipse cx={width/2} rx={height} ry={height}/>
-            </ClipPath>
-          <Image
-            href={require("../assets/moneysocial-logo.png")}
-            width={width}
-            height = {height-250}
-            clipPath = "url(#clipPathId)"
-          />
-        </Svg>
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
-        </Animated.View>
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-       </Animated.View>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
-       </Animated.View>
-        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          {isRegistering && (
-            <TextInput
-            placeholder="Full Name"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          )}
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="black"
-            style={styles.textInput}
-            /> 
-          <View style={styles.formButton}>
-            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
-          </View>
-        </Animated.View>
-      </View>
-    </View>
-
-    );
-    */
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-top',
         backgroundColor: colors.background,
       },
       button: {
-        
-        backgroundColor: colors.primary,
-        height: 55,
-        width: 60,
+        backgroundColor: colors.accent,
+        height: 40,
+        width: 150,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 35,
+        borderRadius:5,
         marginHorizontal: 5,
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
       },
       bottombutton: {
-        
         backgroundColor: colors.primary,
         height: 55,
         width: 60,
@@ -252,9 +211,9 @@ const styles = StyleSheet.create({
         borderColor: 'pink'
       },
       buttonText: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: '600',
-        color: 'white',
+        color: 'black',
         letterSpacing: 0.5
       },
       bottombuttonText: {
@@ -266,12 +225,24 @@ const styles = StyleSheet.create({
       displayText: {
         fontSize: 20,
         fontWeight: '600',
-        color: 'white',
-        letterSpacing: 0.5
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15
+      },
+      welcomeText: {
+        fontSize: 30,
+        fontWeight: '600',
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15,
+        paddingBottom: 20
       },
       bottomContainer: {
-        justifyContent: 'center',
-        height: height / 8,
+        flex: 1,
+        justifyContent: 'flex-end',
+        //height: height / 8,
       },
       bottomScreenHeader: {
         flexDirection: 'row',
@@ -312,7 +283,7 @@ const styles = StyleSheet.create({
         height: 55,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25, //Affects the radius of the corners
+        borderRadius: 10, //Affects the radius of the corners
         marginHorizontal: 20,
         marginVertical: 10,
         borderWidth: 1,

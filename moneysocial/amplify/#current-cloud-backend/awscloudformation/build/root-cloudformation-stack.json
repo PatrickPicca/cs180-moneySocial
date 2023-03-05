@@ -173,7 +173,7 @@
             "Ref": "UnauthRoleName"
           },
           "S3DeploymentBucket": "amplify-moneysocal-staging-22006-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/34278fc1bec794f9dc92cc7f7938c80d71ca7f9a",
+          "S3DeploymentRootKey": "amplify-appsync-files/5b1617285a88e7249ace878f9c0d0fc0f01ae854",
           "env": "staging"
         }
       }

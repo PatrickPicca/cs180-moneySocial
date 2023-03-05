@@ -58,8 +58,8 @@ export default function MainNavigation() {
 
 
                         <Tab.Screen name ={homeName} component={HomeScreen}/>
-                        <Tab.Screen name ={detailsName} component={groupList}/>
-                        <Tab.Screen name ={groupsName} component={ExpenseListScreen}/>
+                        <Tab.Screen name ={detailsName} component={ExpenseListScreen}/>
+                        <Tab.Screen name ={groupsName} component={groupList}/>
                         <Tab.Screen name ={settingsName} component={SettingsScreen}/>
             </Tab.Navigator>
     );

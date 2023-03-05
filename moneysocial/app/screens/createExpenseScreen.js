@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TextInput,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../config/colors';
@@ -25,6 +17,7 @@ function CreateExpenseScreen() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.label}>Add Expense:</Text>
       <TextInput
         style={styles.input}
         placeholder="Title"
@@ -46,8 +39,8 @@ function CreateExpenseScreen() {
         onChangeText={(value) => setPriority(value)}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleCreateExpense}>
-        <Ionicons name={'add'} size={50} />
+      <TouchableOpacity style={styles.returnbutton} onPress={handleCreateExpense}>
+        <Ionicons name={'arrow-back-outline'} size={40} />
       </TouchableOpacity>
     </View>
   );
@@ -82,6 +75,24 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderColor: 'white',
       alignSelf: 'center',
+    },
+    returnbutton: {
+      backgroundColor: colors.primary,
+      height: 50,
+      width: 70,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 70,
+      marginVertical: 10,
+      borderWidth: 2,
+      borderColor: 'white',
+      alignSelf: 'center'
+    },
+    label: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginVertical: 10,
+      marginHorizontal: 20,
     },
   });
   
