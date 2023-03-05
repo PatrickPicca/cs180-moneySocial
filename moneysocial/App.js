@@ -5,8 +5,8 @@ import config from './src/aws-exports';
 
 import React, {useEffect} from 'react';
 import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
-import {getUser} from './src/graphql/queries';
-import {createUser} from './src/graphql/mutations';
+import {getUser} from './src/aws-exports';
+import {createUser} from './src/aws-exports';
 
 Amplify.configure(config);
 

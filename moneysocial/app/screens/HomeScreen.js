@@ -9,8 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/graphql/mutations';
-import * as queries from '../../src/graphql/queries';
+import * as mutations from '../../src/aws-exports';
+import * as queries from '../../src/aws-exports';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 
@@ -172,63 +172,6 @@ function PersonalExpenseScreen() {
       </View>
       
     );
-
-    /*
-    <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height} width={width}>
-            <ClipPath id = "clipPathId">
-                <Ellipse cx={width/2} rx={height} ry={height}/>
-            </ClipPath>
-          <Image
-            href={require("../assets/moneysocial-logo.png")}
-            width={width}
-            height = {height-250}
-            clipPath = "url(#clipPathId)"
-          />
-        </Svg>
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
-        </Animated.View>
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-       </Animated.View>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
-       </Animated.View>
-        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          {isRegistering && (
-            <TextInput
-            placeholder="Full Name"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          )}
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="black"
-            style={styles.textInput}
-            /> 
-          <View style={styles.formButton}>
-            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
-          </View>
-        </Animated.View>
-      </View>
-    </View>
-
-    );
-    */
 }
 
 const styles = StyleSheet.create({
