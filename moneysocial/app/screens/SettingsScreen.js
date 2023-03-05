@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingRight: 300,
         backgroundColor: colors.background,
-      },
+      }, 
       titleContainer:{
         flex: 1,
         justifyContent: 'center',
