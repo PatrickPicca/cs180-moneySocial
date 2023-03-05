@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,7 +21,9 @@ function PersonalExpenseScreen() {
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
-    const myValue = 50;
+    const myValue1 = 1500;
+    const myValue2 = 50;
+    const myName = 'User';
 
     const navigation = useNavigation();
 
@@ -147,29 +149,30 @@ function PersonalExpenseScreen() {
 
     return (
 
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
-        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
-          </View>
-          <Pressable style={styles.bottombutton} onPress={createExpenseHandler}>
-            <Text style={styles.bottombuttonText}>Create Expense</Text>
+        <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
+        <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
+        <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
+
+        <View style={styles.bottomContainer}>
+          <Pressable style={styles.button} onPress={createExpenseHandler}>
+            <Text style={styles.buttonText}>Create Expense</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={createGroupHandler}>
-            <Text style={styles.bottombuttonText}>Create Group</Text>
+          <Pressable style={styles.button} onPress={createGroupHandler}>
+            <Text style={styles.buttonText}>Create Group</Text>
           </Pressable>
 
-          <Pressable style={styles.bottombutton} onPress={getGroupKeyHandler}>
-            <Text style={styles.bottombuttonText}>Get Group</Text>
+          <Pressable style={styles.button} onPress={getGroupKeyHandler}>
+            <Text style={styles.buttonText}>Get Group</Text>
           </Pressable>
+        </View>
 
-        </Animated.View>
-        <TouchableOpacity style={styles.button} onPress = {handleCreateExpense}>
+        <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       
     );
 }
@@ -177,24 +180,22 @@ function PersonalExpenseScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-top',
         backgroundColor: colors.background,
       },
       button: {
-        
-        backgroundColor: colors.primary,
-        height: 55,
-        width: 60,
+        backgroundColor: colors.accent,
+        height: 40,
+        width: 150,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 35,
+        borderRadius:5,
         marginHorizontal: 5,
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
       },
       bottombutton: {
-        
         backgroundColor: colors.primary,
         height: 55,
         width: 60,
@@ -207,9 +208,9 @@ const styles = StyleSheet.create({
         borderColor: 'pink'
       },
       buttonText: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: '600',
-        color: 'white',
+        color: 'black',
         letterSpacing: 0.5
       },
       bottombuttonText: {
@@ -221,12 +222,24 @@ const styles = StyleSheet.create({
       displayText: {
         fontSize: 20,
         fontWeight: '600',
-        color: 'white',
-        letterSpacing: 0.5
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15
+      },
+      welcomeText: {
+        fontSize: 30,
+        fontWeight: '600',
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15,
+        paddingBottom: 20
       },
       bottomContainer: {
-        justifyContent: 'center',
-        height: height / 8,
+        flex: 1,
+        justifyContent: 'flex-end',
+        //height: height / 8,
       },
       bottomScreenHeader: {
         flexDirection: 'row',
@@ -267,7 +280,7 @@ const styles = StyleSheet.create({
         height: 55,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25, //Affects the radius of the corners
+        borderRadius: 10, //Affects the radius of the corners
         marginHorizontal: 20,
         marginVertical: 10,
         borderWidth: 1,
