@@ -25,12 +25,11 @@ function PersonalExpenseScreen() {
 
     const navigation = useNavigation();
 
-
+    //user represents the user id used to query and mutate anything related to the currently logged in user.
     const [user, setUser] = useState(null);
     useEffect(() => {
       const fetchUser = async () => {
         try {
-          const userData = await API.graphql(graphqlOperation(queries.listUsers));
           const authUser = await Auth.currentAuthenticatedUser({
             bypassCache: true,
           });
@@ -39,7 +38,6 @@ function PersonalExpenseScreen() {
           );
           console.log(authUser.attributes.sub);
           setUser(authUser.attributes.sub);
-          //console.log(userData.data.listUsers.items[0]);
         } catch (error) {
           console.log('Error fetching user data:', error);
         }
@@ -119,24 +117,29 @@ function PersonalExpenseScreen() {
     }
 
     const createGroupHandler = async (groupCounting) => {
+
+      //Have query to attempt to locate any group with the passed in groupKey from user. If not in use, create group.
+      //If valid, fails to create to group.
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          name: "A group",
-          groupKey: "A key",
+          name: "A test group",
+          groupKey: "A test key",
+          //Add the current user to that group
         } }
       });
     }
 
     const getGroupKeyHandler = async () => {
       const variables = {
-        input:{
-         groupkey: "A key",
+        filter: {
+          groupKey : {contains: "A test key"}
         },
       };
-      const newTodo = await API.graphql({ query: queries.getGroup,  variables});
-      const theKey = newTodo.data.getGroup.name;
-      console.log(theKey);
+      const newTodo = await API.graphql({ query: queries.listGroups,  variables});
+      //const theName = newTodo.data.getGroup.name;
+        //
+      console.log(newTodo);
     }
 
     
