@@ -19,6 +19,7 @@ export default function MyComponent() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.label}>Expense List:</Text>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -58,8 +59,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 5,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: 'gray',
+  },
+  label: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    marginHorizontal: 20,
+    paddingTop: 20,
   },
 });
