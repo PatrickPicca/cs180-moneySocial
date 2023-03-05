@@ -42,12 +42,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2023-03-01T20:09:44.073Z",
+      "lastPushTimeStamp": "2023-03-04T20:47:37.350Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-moneysocal-staging-22006-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimoneysocial"
       },
-      "lastPushDirHash": "Y6rtrCZmhEsUowhaIZGDd76DFBY="
+      "lastPushDirHash": "vZgE12b5qk2aJogAcDq3+Ceb/nA="
     }
   },
   "auth": {
@@ -85,7 +85,7 @@
         "IdentityPoolName": "testAuthIdentityPool__staging",
         "UserPoolName": "MoneySocial"
       },
-      "lastPushTimeStamp": "2023-03-01T20:09:44.074Z",
+      "lastPushTimeStamp": "2023-03-04T20:47:37.351Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-moneysocal-staging-22006-deployment/amplify-cfn-templates/auth/MoneySocial-cloudformation-template.json",
         "logicalId": "authMoneySocial"

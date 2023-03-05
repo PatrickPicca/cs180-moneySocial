@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 
@@ -18,6 +18,7 @@ function SettingsScreen(props) {
     return (
 
       <>
+      <SafeAreaView style={styles.container}>
         <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>{'Account Info'}</Text>
             <View style={styles.container}>
@@ -31,7 +32,7 @@ function SettingsScreen(props) {
         </TouchableOpacity>
 
         </View>
-
+        </SafeAreaView>
     </>
       
     );
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-top',
         alignItems: 'center',
-        paddingTop: 40,
+        paddingTop: 20,
         backgroundColor: colors.background,
       },
       titleText:{
