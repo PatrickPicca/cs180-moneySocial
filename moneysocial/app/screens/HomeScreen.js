@@ -138,8 +138,8 @@ function PersonalExpenseScreen() {
       };
       const newTodo = await API.graphql({ query: queries.listGroups,  variables});
       //const theName = newTodo.data.getGroup.name;
-        //
-      console.log(newTodo);
+      //Returns just the name of the singular object returned
+      console.log(newTodo.data.listGroups.items[0].name);
     }
 
      
