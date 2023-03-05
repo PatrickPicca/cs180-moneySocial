@@ -9,7 +9,7 @@ import {getUser} from './src/aws-exports';
 import {createUser} from './src/aws-exports';
 import * as mutations from './src/mutations';
 import * as queries from './src/queries';
- 
+  
 Amplify.configure(config);
 
 function App() {
