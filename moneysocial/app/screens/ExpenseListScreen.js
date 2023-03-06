@@ -40,12 +40,23 @@ export default function MyComponent() {
       ) : (
         <View style={styles.itemContainer}>
           <Text style={styles.displayText}>{`${item.name}: $${item.value}`}</Text>
-          <TouchableOpacity
-            style={styles.editButton}
-            onPress={() => handleEdit(item)}
-          >
-            <Text style={styles.editButtonText}>Edit</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => handleEdit(item)}
+            >
+              <Text style={styles.editButtonText}>Edit</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => handleRemove(item.id)}
+            >
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
+
+          </View>
         </View>
       )}
     </View>
@@ -68,6 +79,11 @@ export default function MyComponent() {
     setEditingId(null);
     setName('');
     setValue('');
+  };
+
+  const handleRemove = (id) => {
+    const updatedData = data.filter(item => item.id !== id);
+    setData(updatedData);
   };
 
   const filteredData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -97,6 +113,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   displayBalance: {
     padding: 20,
     borderBottomWidth: 1,
@@ -111,14 +131,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  editContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignItems: 'center'
+  },
   editButton: {
-    backgroundColor: colors.secondary,
+    backgroundColor: 'green',
     padding: 10,
     borderRadius: 5,
+    marginRight: 10,
   },
   editButtonText: {
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+  },
+  editInput: {
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginBottom: 10,
   },
   searchContainer: {
     paddingHorizontal: 20,
@@ -138,5 +173,35 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 20,
     paddingTop: 20,
+  },
+  editContainer: {
+    backgroundColor: colors.background,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.background,
+  },
+  updateButton: {
+    backgroundColor: 'green',
+    paddingTop: 2,
+    paddingVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'white',
+    textAlign: 'center',
+    alignItems: 'center'
+  },
+  updateButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  removeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  removeButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
   },
 })

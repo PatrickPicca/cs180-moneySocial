@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: '600',
         color: 'black',
-        letterSpacing: 0.5
+        letterSpacing: 0.5,
+        textDecorationLine: 'underline',
       },
       button: {
         backgroundColor: colors.primary,
