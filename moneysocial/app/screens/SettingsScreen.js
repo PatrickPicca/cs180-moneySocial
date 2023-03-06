@@ -41,7 +41,7 @@ function SettingsScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        height: height / 8,
         paddingTop: 40,
         paddingRight: 300,
         backgroundColor: colors.background,

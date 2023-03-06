@@ -156,7 +156,6 @@ function PersonalExpenseScreen() {
       <SafeAreaView style={styles.container}>
 
         <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
-        <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
         <View style={styles.bottomContainer}>
