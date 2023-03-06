@@ -7,7 +7,9 @@ import React, {useEffect} from 'react';
 import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
 import {getUser} from './src/aws-exports';
 import {createUser} from './src/aws-exports';
-
+import * as mutations from './src/mutations';
+import * as queries from './src/queries';
+  
 Amplify.configure(config);
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
 
       // query the database using Auth user id (sub)
       const userData = await API.graphql(
-        graphqlOperation(getUser, { id: authUser.attributes.sub })
+        graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
       );
 
       if (userData.data.getUser) {
@@ -38,7 +40,7 @@ function App() {
       };
 
       await API.graphql(
-        graphqlOperation(createUser, { input: newUser })
+        graphqlOperation(mutations.createUser, { input: newUser })
       );
     };
 

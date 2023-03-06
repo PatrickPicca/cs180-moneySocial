@@ -37,18 +37,18 @@ function SettingsScreen(props) {
       
     );
 }
-
+ 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         paddingTop: 40,
         paddingRight: 300,
         backgroundColor: colors.background,
-      },
+      }, 
       titleContainer:{
         flex: 1,
-        justifyContent: 'flex-top',
+        justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
         backgroundColor: colors.background,

@@ -9,8 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/aws-exports';
-import * as queries from '../../src/aws-exports';
+import * as mutations from '../../src/mutations';
+import * as queries from '../../src/queries';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 
@@ -108,11 +108,11 @@ function PersonalExpenseScreen() {
     const createExpenseHandler = async () => {
       const variables = {
         input: {
-          amount: 1000, 
-          description: "This is a new  test expense",
+          amount: 5000, 
+          description: "Test dummy expense",
           userID: user,
           groupID: "Null",
-          category: "Test Cateogry"
+          category: "Food"
         },
       };
       const newTodo = await API.graphql({ query: mutations.createExpense, variables});
@@ -125,14 +125,15 @@ function PersonalExpenseScreen() {
       const newTodo = await API.graphql({ 
         query: mutations.createGroup, 
         variables: { input: {
-          name: "A test group",
-          groupKey: "A test key",
+          name: "Another group",
+          groupKey: "Another key",
           //Add the current user to that group
         } }
       });
     }
 
     const getGroupKeyHandler = async () => {
+      console.log("In group handler");
       const variables = {
         filter: {
           groupKey : {contains: "A test key"}
@@ -175,15 +176,15 @@ function PersonalExpenseScreen() {
         <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
         </TouchableOpacity>
-      </SafeAreaView>
+        </SafeAreaView>
       
     );
 }
-
+  
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-top',
+        justifyContent: 'flex-end',
         backgroundColor: colors.background,
       },
       button: {
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
       bottomContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        //height: height / 8,
+        height: height / 8,
       },
       bottomScreenHeader: {
         flexDirection: 'row',
