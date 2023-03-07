@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CreateExpenseScreen from './createExpenseScreen';
 import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
+import UploadImage from './uploadImage';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 import { API, graphqlOperation, Auth } from "aws-amplify";
@@ -105,17 +106,43 @@ function PersonalExpenseScreen() {
       props.navigation.navigate('ExpenseListScreen');
     }
 
-    const createExpenseHandler = async () => {
+    const updateExpenseHandler = async () => {
+      //This block of code queries a specified expense object
+      console.log("In update expense handler");
       const variables = {
-        input: {
-          amount: 5000, 
-          description: "Test dummy expense",
-          userID: user,
-          groupID: "Null",
-          category: "Food"
+        filter: {
+          id : {eq: "4d785079-cbdc-4a6f-9b64-07c59b5d8bef"}
         },
       };
-      const newTodo = await API.graphql({ query: mutations.createExpense, variables});
+      const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
+      console.log(newTodo.data.listExpenses.items[0].description);
+      //This block of code updates the desription iwth the specified expense object
+      const variables2 = {
+          id : '4d785079-cbdc-4a6f-9b64-07c59b5d8bef',
+          description : "A basket of eggs"
+      };
+      const newTodo2 = await API.graphql({ query: mutations.updateExpense,  variables: { input: variables2 }});
+      //This line of code uses the previous query to show the now updated description.
+      const newTodo3 = await API.graphql({ query: queries.listExpenses,  variables});
+      console.log(newTodo3.data.listExpenses.items[0].description);
+    }
+
+    const updateUserGroupsHandler = async () => {
+      //This block of code queries a specified expense object
+      console.log("In UserGroups handler");
+      const newTodo = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+      console.log(newTodo.data);
+      //This block of code updates the desription iwth the specified expense object
+      
+      const variables2 = {
+          id : user,
+          description : "A basket of eggs"
+      };
+      const newTodo2 = await API.graphql({ query: mutations.updateUser,  variables: { input: variables2 }});
+      //This line of code uses the previous query to show the now updated list of Expenses.
+      const newTodo3 = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+      console.log(newTodo3.data);
+      
     }
 
     const createGroupHandler = async (groupCounting) => {
@@ -136,7 +163,7 @@ function PersonalExpenseScreen() {
       console.log("In group handler");
       const variables = {
         filter: {
-          groupKey : {contains: "A test key"}
+          groupKey : {eq: "A test key"}
         },
       };
       const newTodo = await API.graphql({ query: queries.listGroups,  variables});
@@ -156,15 +183,17 @@ function PersonalExpenseScreen() {
       <SafeAreaView style={styles.container}>
 
         <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
+        <UploadImage/>
+        <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
         <View style={styles.bottomContainer}>
-          <Pressable style={styles.button} onPress={createExpenseHandler}>
-            <Text style={styles.buttonText}>Create Expense</Text>
+          <Pressable style={styles.button} onPress={updateExpenseHandler}>
+            <Text style={styles.buttonText}>Update Expense</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={createGroupHandler}>
-            <Text style={styles.buttonText}>Create Group</Text>
+          <Pressable style={styles.button} onPress={updateUserGroupsHandler}>
+            <Text style={styles.buttonText}>Update UserGroups </Text>
           </Pressable>
 
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
