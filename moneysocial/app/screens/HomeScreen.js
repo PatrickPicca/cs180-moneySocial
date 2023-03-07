@@ -1,34 +1,53 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-
-import colors from '../config/colors'
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CreateExpenseScreen from './createExpenseScreen';
+import colors from '../config/colors';
+import { useNavigation } from '@react-navigation/native';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
+import { API, graphqlOperation, Auth } from "aws-amplify";
+import * as mutations from '../../src/mutations';
+import * as queries from '../../src/queries';
+import awsconfig from '../../src/aws-exports';
+API.configure(awsconfig);
 
 const {width, height} = Dimensions.get('window');
 
-function PersonalExpenseScreen(props) {
+function PersonalExpenseScreen() {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
-    const myValue = 50;
+    const myValue1 = 1500;
+    const myValue2 = 50;
+    const myName = 'User';
 
-    //Here we will need the entire list of Expense objects, of all categories, from this specific user.
-      //In the view section you should be able to view the following
-          //Current overall total expense for the past month.
-            //This can be display with a number as well as a pie chart breakdown oc categories by color.
-          //Button option to view total expense for the past month by category.
-          //Button option to view the list of all individual expenses of all time.
-          //Button option to make an expense.
-            //This should take you to some Expense screen where you can fill out a varying list of details for that one expense.
-    
-    //We will also need a button that lead to the WelcomeScreen that logs you out.
-    //We will also need to add a group view button, that would take you to the GroupExpense Screen.
+    const navigation = useNavigation();
 
+    //user represents the user id used to query and mutate anything related to the currently logged in user.
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          const userData2 = await API.graphql(
+            graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+          );
+          console.log(authUser.attributes.sub);
+          setUser(authUser.attributes.sub);
+        } catch (error) {
+          console.log('Error fetching user data:', error);
+        }
+      }; 
+      fetchUser();
+    }, []);
+    //user.id
+    //user.expenses
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
@@ -86,98 +105,108 @@ function PersonalExpenseScreen(props) {
       props.navigation.navigate('ExpenseListScreen');
     }
 
+    const updateExpenseHandler = async () => {
+      //This block of code queries a specified expense object
+      console.log("In update expense handler");
+      const variables = {
+        filter: {
+          id : {eq: "4d785079-cbdc-4a6f-9b64-07c59b5d8bef"}
+        },
+      };
+      const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
+      console.log(newTodo.data.listExpenses.items[0].description);
+      //This block of code updates the desription iwth the specified expense object
+      const variables2 = {
+          id : '4d785079-cbdc-4a6f-9b64-07c59b5d8bef',
+          description : "A basket of eggs"
+      };
+      const newTodo2 = await API.graphql({ query: mutations.updateExpense,  variables: { input: variables2 }});
+      //This line of code uses the previous query to show the now updated description.
+      const newTodo3 = await API.graphql({ query: queries.listExpenses,  variables});
+      console.log(newTodo3.data.listExpenses.items[0].description);
+    }
+
+    const updateUserGroupsHandler = async () => {
+      //This block of code queries a specified expense object
+      console.log("In UserGroups handler");
+      const newTodo = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+      console.log(newTodo.data);
+      //This block of code updates the desription iwth the specified expense object
+      
+      const variables2 = {
+          id : user,
+          description : "A basket of eggs"
+      };
+      const newTodo2 = await API.graphql({ query: mutations.updateUser,  variables: { input: variables2 }});
+      //This line of code uses the previous query to show the now updated list of Expenses.
+      const newTodo3 = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+      console.log(newTodo3.data);
+      
+    }
+
+    const createGroupHandler = async (groupCounting) => {
+
+      //Have query to attempt to locate any group with the passed in groupKey from user. If not in use, create group.
+      //If valid, fails to create to group.
+      const newTodo = await API.graphql({ 
+        query: mutations.createGroup, 
+        variables: { input: {
+          name: "Another group",
+          groupKey: "Another key",
+          //Add the current user to that group
+        } }
+      });
+    }
+
+    const getGroupKeyHandler = async () => {
+      console.log("In group handler");
+      const variables = {
+        filter: {
+          groupKey : {eq: "A test key"}
+        },
+      };
+      const newTodo = await API.graphql({ query: queries.listGroups,  variables});
+      //const theName = newTodo.data.getGroup.name;
+      //Returns just the name of the singular object returned
+      console.log(newTodo.data.listGroups.items[0].name);
+    }
+
+     
+   
+    const handleCreateExpense = () => {
+      navigation.navigate(CreateExpenseScreen);
+    }
+
     return (
 
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
-        
+        <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
+        <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
+        <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
-        <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-          <View style={styles.displayBalance}>
-            <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue}</Text>
-          </View>
-        </Animated.View>
+        <View style={styles.bottomContainer}>
+          <Pressable style={styles.button} onPress={updateExpenseHandler}>
+            <Text style={styles.buttonText}>Update Expense</Text>
+          </Pressable>
 
+          <Pressable style={styles.button} onPress={updateUserGroupsHandler}>
+            <Text style={styles.buttonText}>Update UserGroups </Text>
+          </Pressable>
 
-        
-        <Animated.View style={buttonsAnimatedStyle}>
-          <View style={styles.bottomScreenHeader}>
-            <Pressable style={styles.bottombutton} onPress={WelcomeScreenHandler}>
-              <Text style={styles.bottombuttonText}>Logout</Text>
-            </Pressable>
+          <Pressable style={styles.button} onPress={getGroupKeyHandler}>
+            <Text style={styles.buttonText}>Get Group</Text>
+          </Pressable>
+        </View>
 
-            <Pressable style={styles.bottombutton} onPress={ExpenseListScreenHander}>
-              <Text style={styles.bottombuttonText}>Details</Text>
-            </Pressable>
-
-            <Pressable style={styles.bottombutton} onPress={GroupScreenHandler}>
-              <Text style={styles.bottombuttonText}>Groups</Text>
-            </Pressable>
-            
-          </View>  
-        </Animated.View>
-      </View>
+        <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
+          <Ionicons name="add" />
+        </TouchableOpacity>
+        </SafeAreaView>
       
     );
-
-    /*
-    <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height} width={width}>
-            <ClipPath id = "clipPathId">
-                <Ellipse cx={width/2} rx={height} ry={height}/>
-            </ClipPath>
-          <Image
-            href={require("../assets/moneysocial-logo.png")}
-            width={width}
-            height = {height-250}
-            clipPath = "url(#clipPathId)"
-          />
-        </Svg>
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <Text onPress={() => (imagePosition.value = 1)}>X</Text>
-        </Animated.View>
-      </Animated.View>
-      <View style={styles.bottomContainer}>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-       </Animated.View>
-       <Animated.View style={buttonsAnimatedStyle}>
-        <Pressable style={styles.button} onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
-       </Animated.View>
-        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          {isRegistering && (
-            <TextInput
-            placeholder="Full Name"
-            placeholderTextColor="black"
-            style={styles.textInput}
-          />
-          )}
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="black"
-            style={styles.textInput}
-            /> 
-          <View style={styles.formButton}>
-            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER' : 'LOG IN'}</Text>
-          </View>
-        </Animated.View>
-      </View>
-    </View>
-
-    );
-    */
 }
-
+  
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -185,20 +214,18 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
       },
       button: {
-        
-        backgroundColor: colors.primary,
-        height: 55,
-        width: 60,
+        backgroundColor: colors.accent,
+        height: 40,
+        width: 150,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 35,
+        borderRadius:5,
         marginHorizontal: 5,
         marginVertical: 10,
         borderWidth: 2,
         borderColor: 'white'
       },
       bottombutton: {
-        
         backgroundColor: colors.primary,
         height: 55,
         width: 60,
@@ -211,9 +238,9 @@ const styles = StyleSheet.create({
         borderColor: 'pink'
       },
       buttonText: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: '600',
-        color: 'white',
+        color: 'black',
         letterSpacing: 0.5
       },
       bottombuttonText: {
@@ -225,11 +252,23 @@ const styles = StyleSheet.create({
       displayText: {
         fontSize: 20,
         fontWeight: '600',
-        color: 'white',
-        letterSpacing: 0.5
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15
+      },
+      welcomeText: {
+        fontSize: 30,
+        fontWeight: '600',
+        color: 'black',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingLeft: 15,
+        paddingBottom: 20
       },
       bottomContainer: {
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'flex-end',
         height: height / 8,
       },
       bottomScreenHeader: {
@@ -271,7 +310,7 @@ const styles = StyleSheet.create({
         height: 55,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25, //Affects the radius of the corners
+        borderRadius: 10, //Affects the radius of the corners
         marginHorizontal: 20,
         marginVertical: 10,
         borderWidth: 1,
@@ -281,7 +320,7 @@ const styles = StyleSheet.create({
           width: 0,
           height: 4,
         },
-        
+        top: +10,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,

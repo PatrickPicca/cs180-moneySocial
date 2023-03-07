@@ -1,14 +1,54 @@
 import { StyleSheet, Text, View } from 'react-native';
-import MainNavigation from './app/Routes/MainNavigation';
-import { Amplify, Auth } from 'aws-amplify';
+import StackNavigator from './app/Routes/StackNavigator';
 import {withAuthenticator} from 'aws-amplify-react-native';
 import config from './src/aws-exports';
 
+import React, {useEffect} from 'react';
+import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
+import {getUser} from './src/aws-exports';
+import {createUser} from './src/aws-exports';
+import * as mutations from './src/mutations';
+import * as queries from './src/queries';
+  
 Amplify.configure(config);
 
 function App() {
+
+  useEffect(() => {
+    const syncUser = async () => {
+      // get Auth user
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+
+      // query the database using Auth user id (sub)
+      const userData = await API.graphql(
+        graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+      );
+
+      if (userData.data.getUser) {
+        console.log("User already exists in DB");
+        console.log(userData)
+        return;
+      }
+      // if there is no users in db, create one
+      const newUser = {
+        id: authUser.attributes.sub,
+        name: authUser.attributes.name,
+        imageUri: '',
+        bio: "Hey, I am using MoneySocial"
+      };
+
+      await API.graphql(
+        graphqlOperation(mutations.createUser, { input: newUser })
+      );
+    };
+
+    syncUser();
+  }, []);
+
   return (
-  <MainNavigation />
+  <StackNavigator />
   );
 };
 
