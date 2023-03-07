@@ -105,7 +105,8 @@ function PersonalExpenseScreen() {
       props.navigation.navigate('ExpenseListScreen');
     }
 
-    const createExpenseHandler = async () => {
+    const updateExpenseHandler = async () => {
+      /*
       const variables = {
         input: {
           amount: 5000, 
@@ -116,6 +117,7 @@ function PersonalExpenseScreen() {
         },
       };
       const newTodo = await API.graphql({ query: mutations.createExpense, variables});
+      */
     }
 
     const createGroupHandler = async (groupCounting) => {
@@ -160,8 +162,8 @@ function PersonalExpenseScreen() {
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
         <View style={styles.bottomContainer}>
-          <Pressable style={styles.button} onPress={createExpenseHandler}>
-            <Text style={styles.buttonText}>Create Expense</Text>
+          <Pressable style={styles.button} onPress={updateExpenseHandler}>
+            <Text style={styles.buttonText}>Update Expense</Text>
           </Pressable>
 
           <Pressable style={styles.button} onPress={createGroupHandler}>
