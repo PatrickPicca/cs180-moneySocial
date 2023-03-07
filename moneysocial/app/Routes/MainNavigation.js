@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import groupList from '../screens/groupList';
 import ExpenseListScreen from '../screens/ExpenseListScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ProfileScreen from '../screens/Profile';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -18,6 +19,7 @@ const homeName = 'Home';
 const detailsName = 'Details';
 const groupsName = 'Groups';
 const settingsName = 'Settings'
+const profileName = 'Profile'
 
 const Tab = createBottomTabNavigator();
 
@@ -33,10 +35,12 @@ export default function MainNavigation() {
 
                         if(rn === homeName) {
                             iconName = focused ? 'home' : 'home-outline';
+                        } else if (rn === profileName){
+                            iconName = focused ? 'person' : 'person-outline';
                         } else if (rn === detailsName){
                             iconName = focused ? 'list' : 'list-outline';
                         } else if (rn == groupsName){
-                            iconName = focused ? 'person' : 'person-outline';
+                            iconName = focused ? 'people' : 'people-outline';
                         } else if (rn == settingsName){
                             iconName = focused ? 'settings' : 'settings-outline';
                         }
@@ -56,8 +60,8 @@ export default function MainNavigation() {
                 
                 >
 
-
                         <Tab.Screen name ={homeName} component={HomeScreen}/>
+                        <Tab.Screen name ={profileName} component={ProfileScreen}/>
                         <Tab.Screen name ={detailsName} component={ExpenseListScreen}/>
                         <Tab.Screen name ={groupsName} component={groupList}/>
                         <Tab.Screen name ={settingsName} component={SettingsScreen}/>
