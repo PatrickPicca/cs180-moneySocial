@@ -1,22 +1,90 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-npm install @react-navigation/native @react-navigation/native-stack
+import StackNavigator from './app/Routes/StackNavigator';
+import {withAuthenticator} from 'aws-amplify-react-native';
+import config from './src/aws-exports';
 
+import React, {useEffect} from 'react';
+import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
+import {getUser} from './src/aws-exports';
+import {createUser} from './src/aws-exports';
+import * as mutations from './src/mutations';
+import * as queries from './src/queries';
+  
+Amplify.configure(config);
 
-export default function App() {
+function App() {
+
+  useEffect(() => {
+    const syncUser = async () => {
+      // get Auth user
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+
+      // query the database using Auth user id (sub)
+      const userData = await API.graphql(
+        graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+      );
+
+      if (userData.data.getUser) {
+        console.log("User already exists in DB");
+        console.log(userData)
+        return;
+      }
+      // if there is no users in db, create one
+      const newUser = {
+        id: authUser.attributes.sub,
+        name: authUser.attributes.name,
+        imageUri: '',
+        bio: "Hey, I am using MoneySocial"
+      };
+
+      await API.graphql(
+        graphqlOperation(mutations.createUser, { input: newUser })
+      );
+    };
+
+    syncUser();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+  <StackNavigator />
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const signUpConfig = {
+  header: "My Customized Sign Up",
+  hideAllDefaults: true,
+  signUpFields: [
+    {
+      label: "Name",
+      key: "name",
+      required: true,
+      displayOrder: 1,
+      type: "string",
+    },
+    {
+      label: "Email",
+      key: "email",
+      required: true,
+      displayOrder: 2,
+      type: "string",
+    },
+    {
+      label: "Username",
+      key: "preferred_username",
+      required: true,
+      displayOrder: 3,
+      type: "string",
+    },
+    {
+      label: "Password",
+      key: "password",
+      required: true,
+      displayOrder: 4,
+      type: "password",
+    },
+  ],
+};
+
+export default withAuthenticator(App, {signUpConfig}); 
