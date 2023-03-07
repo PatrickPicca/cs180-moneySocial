@@ -136,7 +136,7 @@ function PersonalExpenseScreen() {
       console.log("In group handler");
       const variables = {
         filter: {
-          groupKey : {contains: "A test key"}
+          groupKey : {eq: "A test key"}
         },
       };
       const newTodo = await API.graphql({ query: queries.listGroups,  variables});
