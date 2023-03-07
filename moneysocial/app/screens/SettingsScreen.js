@@ -41,15 +41,11 @@ function SettingsScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: height / 8,
-        justifyContent: 'center',
         paddingTop: 40,
-        //paddingRight: width/1.5,
         backgroundColor: colors.background,
       }, 
       titleContainer:{
         flex: 1,
-       //justifyContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
