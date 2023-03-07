@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import colors from '../config/colors';
 
 const GroupData = [
@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   editContainer: {
-    backgroundColor: colors.background,
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: colors.background,
