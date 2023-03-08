@@ -109,12 +109,12 @@ function PersonalExpenseScreen() {
     const updateExpenseHandler = async () => {
       //This block of code queries a specified expense object
       console.log("In update expense handler");
-      const variables = {
-        filter: {
-          id : {eq: "4d785079-cbdc-4a6f-9b64-07c59b5d8bef"}
-        },
-      };
-      const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
+        const variables = {
+          filter: {
+            id : {eq: "4d785079-cbdc-4a6f-9b64-07c59b5d8bef"}
+          },
+        };
+        const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
       console.log(newTodo.data.listExpenses.items[0].description);
       //This block of code updates the desription iwth the specified expense object
       const variables2 = {
@@ -126,6 +126,16 @@ function PersonalExpenseScreen() {
       const newTodo3 = await API.graphql({ query: queries.listExpenses,  variables});
       console.log(newTodo3.data.listExpenses.items[0].description);
     }
+
+    const getAllGroupsHandler = async () => {
+      console.log("in getAllUsersInGroup handler");
+      const variables = {
+        filter: {
+          userId : {eq: "7914cf82-80b1-4958-b7e3-8498d5833010"}},
+      }; 
+      const newTodo = await API.graphql({ query: queries.listUserGroups, variables});
+      console.log(newTodo);
+    };
 
     const updateUserGroupsHandler = async () => {
       //This block of code queries a specified expense object
@@ -159,6 +169,19 @@ function PersonalExpenseScreen() {
       });
     }
 
+    const getAllUserExpenses = async () => {
+      //This block of code queries a specified expense object
+      console.log("In getAllUSerExpenses handler");
+      const variables = {
+        filter: {
+          userID : {eq: user}
+        },
+      };
+      const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
+      console.log(newTodo.data.listExpenses);
+    
+    }
+
     const getGroupKeyHandler = async () => {
       console.log("In group handler");
       const variables = {
@@ -188,12 +211,12 @@ function PersonalExpenseScreen() {
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
         <View style={styles.bottomContainer}>
-          <Pressable style={styles.button} onPress={updateExpenseHandler}>
-            <Text style={styles.buttonText}>Update Expense</Text>
+          <Pressable style={styles.button} onPress={getAllGroupsHandler}>
+            <Text style={styles.buttonText}>Get All Groups</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={updateUserGroupsHandler}>
-            <Text style={styles.buttonText}>Update UserGroups </Text>
+          <Pressable style={styles.button} onPress={getAllUserExpenses}>
+            <Text style={styles.buttonText}>Get All Expenses </Text>
           </Pressable>
 
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
