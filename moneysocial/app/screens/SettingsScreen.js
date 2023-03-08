@@ -38,8 +38,8 @@ function SettingsScreen(props) {
                 <Text style={styles.displayText}>{'Password: '}</Text>
             </View>
 
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={onSignOutClick}>LOG OUT</Text>
+        <TouchableOpacity style={styles.button} onPress={onSignOutClick}>
+            <Text style={styles.buttonText}>LOG OUT</Text>
         </TouchableOpacity>
 
         </View>
