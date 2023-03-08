@@ -114,6 +114,8 @@ function PersonalExpenseScreen() {
           id : {eq: "4d785079-cbdc-4a6f-9b64-07c59b5d8bef"}
         },
       };
+
+
       const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
       console.log(newTodo.data.listExpenses.items[0].description);
       //This block of code updates the desription iwth the specified expense object
@@ -122,15 +124,26 @@ function PersonalExpenseScreen() {
           description : "A basket of eggs"
       };
       const newTodo2 = await API.graphql({ query: mutations.updateExpense,  variables: { input: variables2 }});
+
       //This line of code uses the previous query to show the now updated description.
       const newTodo3 = await API.graphql({ query: queries.listExpenses,  variables});
       console.log(newTodo3.data.listExpenses.items[0].description);
     }
 
+    const updateUserExpense = async () => {
+      console.log("In updateUserExpense ");
+      const newTodo = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+
+      const newTodo2 = await API.graphql({ query: mutations,  variables: { input: variables2 }})
+
+    }
+
+
     const updateUserGroupsHandler = async () => {
       //This block of code queries a specified expense object
       console.log("In UserGroups handler");
       const newTodo = await API.graphql(graphqlOperation(queries.getUser, { id: user }));
+    
       console.log(newTodo.data);
       //This block of code updates the desription iwth the specified expense object
       
@@ -172,8 +185,27 @@ function PersonalExpenseScreen() {
       console.log(newTodo.data.listGroups.items[0].name);
     }
 
-     
-   
+    const getAllGroupsHandler = async () => { //by user id
+        console.log("in getAllGroups handler");
+        const variables = {
+          filter: {
+            userId : {eq: "7914cf82-80b1-4958-b7e3-8498d5833010"}},
+        }; 
+        const newTodo = await API.graphql({ query: queries.listUserGroups, variables});
+        console.log(newTodo);
+      };
+
+      const getAllUsersHandler = async () => { //by group id
+        console.log("in getAllUsers handler");
+        const variables = { filter: {groupId: {eq: "3c63a290-d696-45c5-8f3f-5933081b8947"}}
+        }; 
+        const newTodo = await API.graphql({ query: queries.listUserGroups, variables});
+        console.log(newTodo);
+      };
+
+
+       
+
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
     }
@@ -199,7 +231,18 @@ function PersonalExpenseScreen() {
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
             <Text style={styles.buttonText}>Get Group</Text>
           </Pressable>
+          
+          <Pressable style={styles.button} onPress={getAllGroupsHandler}>
+            <Text style={styles.buttonText}>Get All Groups</Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={getAllUsersHandler}>
+            <Text style={styles.buttonText}>Get All Users</Text>
+          </Pressable>
+
         </View>
+        
+
 
         <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
