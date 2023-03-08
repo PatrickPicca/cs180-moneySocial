@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
+import { Auth } from 'aws-amplify';
 
 import colors from '../config/colors'
 import { useNavigation, useNavigationState } from '@react-navigation/native';
@@ -13,7 +14,17 @@ function SettingsScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
-    
+
+    const navigation = useNavigation();
+
+    const onSignOutClick = async () => {
+    try {
+      const data = await Auth.signOut();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
     return (
 
@@ -28,7 +39,7 @@ function SettingsScreen(props) {
             </View>
 
         <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>LOG OUT</Text>
+            <Text style={styles.buttonText} onPress={onSignOutClick}>LOG OUT</Text>
         </TouchableOpacity>
 
         </View>
