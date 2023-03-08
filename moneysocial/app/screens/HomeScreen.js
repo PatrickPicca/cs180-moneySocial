@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CreateExpenseScreen from './createExpenseScreen';
 import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
+import UploadImage from './uploadImage';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
 import { API, graphqlOperation, Auth } from "aws-amplify";
@@ -182,6 +183,7 @@ function PersonalExpenseScreen() {
       <SafeAreaView style={styles.container}>
 
         <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
+        <UploadImage/>
         <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 

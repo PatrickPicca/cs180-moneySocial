@@ -41,9 +41,7 @@ function SettingsScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         paddingTop: 40,
-        paddingRight: 300,
         backgroundColor: colors.background,
       }, 
       titleContainer:{
@@ -57,7 +55,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: '600',
         color: 'black',
-        letterSpacing: 0.5
+        letterSpacing: 0.5,
+        textDecorationLine: 'underline',
       },
       button: {
         backgroundColor: colors.primary,
