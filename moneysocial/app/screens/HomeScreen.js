@@ -190,6 +190,7 @@ function PersonalExpenseScreen() {
         const variables = {
           filter: {
             userId : {eq: "7914cf82-80b1-4958-b7e3-8498d5833010"}},
+            
         }; 
         const newTodo = await API.graphql({ query: queries.listUserGroups, variables});
         console.log(newTodo);
@@ -203,8 +204,13 @@ function PersonalExpenseScreen() {
         console.log(newTodo);
       };
 
-
-       
+      const getExpensesHandler = async () => { //by group id
+        console.log("in getExpenses handler");
+        const variables = { filter: {groupId: {eq: "3c63a290-d696-45c5-8f3f-5933081b8947"}}
+        }; 
+        const newTodo = await API.graphql({ query: queries.listExpenses, variables});
+        console.log(newTodo);
+      };
 
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
@@ -239,6 +245,11 @@ function PersonalExpenseScreen() {
           <Pressable style={styles.button} onPress={getAllUsersHandler}>
             <Text style={styles.buttonText}>Get All Users</Text>
           </Pressable>
+
+          <Pressable style={styles.button} onPress={getExpensesHandler}>
+            <Text style={styles.buttonText}>Get expenses from group</Text>
+          </Pressable>
+
 
         </View>
         
