@@ -54,7 +54,7 @@ const MyComponent = () => {
       }; 
       fetchUser();
     }, []);
-    
+  //Contains the categories of all expenses, in preperation to obtain only uniques
   const filtering = [];
   //Stored in uniqueVals are the cumulative sums of each unique category.
   const uniqueVals = [];
@@ -65,11 +65,18 @@ const MyComponent = () => {
       },
     };
     const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
-
+    filtering.splice(0, filtering.length);
+    while (filtering.length > 0)
+    {
+      filtering.pop();
+    }
+    while (uniqueVals.length > 0)
+    {
+      uniqueVals.pop();
+    }
     for (let i = 0; i < newTodo.data.listExpenses.items.length; i++) {
       filtering.push(newTodo.data.listExpenses.items[i].category);
     }
-    //Stored in unique is all unique categories. USE THE BELOW LINE TO CONVERT filtering TO unique categories
     const unique = filtering.filter((value, index, array) => array.indexOf(value) === index);
     //Below forloops handle obtainins the unique values and assigning them to the external const arrays.
     for (let i = 0; i < unique.length; i++) {
@@ -90,6 +97,7 @@ const MyComponent = () => {
   //The below focus function processes everything only once, whenever this screen gets focused
   useFocusEffect(React.useCallback(() => 
   {
+    uniqueVals.clear;
     getUserExpenses()
   }));
   //let a = ["1", "1", "2", "3", "3", "1"];
