@@ -212,6 +212,25 @@ function PersonalExpenseScreen() {
         console.log(newTodo);
       };
 
+
+      const createUserGroupHandler = async () => { //by group id
+        console.log("in createUserGroup handler");
+        const variables = {input: {groupId: "3c63a290-d696-45c5-8f3f-5933081b8947", userId: "7914cf82-80b1-4958-b7e3-8498d5833010"}
+        }; 
+        const newTodo = await API.graphql({ query: mutations.createUserGroup, variables});
+        console.log(newTodo);
+      };
+
+      const deleteUserFromGroupHandler = async () => { //by user id
+        console.log("in deletefromGroup handler");
+        const variables = {input: {id: "f9be29ea-6f37-433c-94a9-f687c2f331d4"}
+      };
+         
+        const newTodo = await API.graphql({ query: mutations.deleteUserGroup, variables});
+        console.log(newTodo);
+      };
+    
+
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
     }
@@ -247,14 +266,19 @@ function PersonalExpenseScreen() {
           </Pressable>
 
           <Pressable style={styles.button} onPress={getExpensesHandler}>
-            <Text style={styles.buttonText}>Get expenses from group</Text>
+            <Text style={styles.buttonText}>Get Expenses From Group</Text>
           </Pressable>
 
+          <Pressable style={styles.button} onPress={createUserGroupHandler}>
+            <Text style={styles.buttonText}>Create User Group </Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={deleteUserFromGroupHandler}>
+            <Text style={styles.buttonText}>Delete User From Group </Text>
+          </Pressable>
 
         </View>
-        
-
-
+      
         <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
           <Ionicons name="add" />
         </TouchableOpacity>
