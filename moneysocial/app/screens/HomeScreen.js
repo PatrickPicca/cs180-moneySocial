@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity, Alert} from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -195,10 +195,67 @@ function PersonalExpenseScreen() {
       console.log(newTodo.data.listGroups.items[0].name);
     }
 
-     
-   
+    const deleteExpenseHandler = async () => {
+      console.log("In delete expense handler");
+      const variables = {
+            userID : "56425332-a0ff-4548-8df0-f6b7439a1c78"
+      }
+      //list all expenses for current user. the userID is hardcoded for now
+      const result = await API.graphql({query: queries.expensesByUserID, variables});
+      //the expenseIDToDelete is hardcoded for now
+      const arr = result.data.expensesByUserID.items;
+      const expenseIDToDelete = "73d3c70d-a518-4e20-a798-dba6ce987ea9";
+      let found = false;
+      //check if the expenseIDToDelete is in the list of expenses for the current user
+      if(arr.length > 0){
+        for(let i = 0; i < arr.length; i++){
+          if(arr[i].id === expenseIDToDelete){
+            found = true;
+            break;
+          }
+        }
+      }
+      if(!found){
+        Alert.alert("You do not have the permission to delete this expense");
+        return;
+      }
+            
+      const variables1 = {
+        input: {
+          id: expenseIDToDelete
+        }
+      }
+      //delete the expense
+      await API.graphql({query: mutations.deleteExpense, variables: variables1});
+      
+    }
+
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
+    }
+
+    const leaveGroupHandler = async () => {
+      console.log("In delete group handler");
+      //the groupToDelete is hardcoded for now
+      const groupToLeave = "a0fcbc1a-ffb8-433f-832e-09914ded3d4b"
+      //the userID is hardcoded for now
+      const userID = "9b75f790-91cb-45d3-9da3-5f802da90355"
+      let variables = {
+        groupId: groupToLeave
+      }
+      let result = await API.graphql({query: queries.userGroupsByGroupId, variables: variables});
+      for(let i = 0; i < result.data.userGroupsByGroupId.items.length; i++){
+        if(result.data.userGroupsByGroupId.items[i].userId === userID){
+          variables = {
+            input: {
+              id: result.data.userGroupsByGroupId.items[i].id
+            }
+          }
+          await API.graphql({query: mutations.deleteUserGroup, variables: variables});
+          console.log("Successfully left group");
+          return;
+        }
+      }
     }
 
     return (
@@ -221,6 +278,10 @@ function PersonalExpenseScreen() {
 
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
             <Text style={styles.buttonText}>Get Group</Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={leaveGroupHandler}>
+            <Text style={styles.buttonText}>Testing</Text>
           </Pressable>
         </View>
 
