@@ -211,27 +211,30 @@ function PersonalExpenseScreen() {
       navigation.navigate(CreateExpenseScreen);
     }
 
-    const deleteGroupHandler = async () => {
+    const leaveGroupHandler = async () => {
       console.log("In delete group handler");
       //the groupToDelete is hardcoded for now
-      const groupToDelete = "d31ba286-216b-47b9-9c41-5e584f1cea30"
+      const groupToLeave = "a0fcbc1a-ffb8-433f-832e-09914ded3d4b"
+      //the userID is hardcoded for now
+      const userID = "9b75f790-91cb-45d3-9da3-5f802da90355"
       let variables = {
-        groupId: groupToDelete
+        groupId: groupToLeave
       }
       let result = await API.graphql({query: queries.userGroupsByGroupId, variables: variables});
-      console.log(result.data.userGroupsByGroupId.items);
-      if(result.data.userGroupsByGroupId.items.length !== 1){
-        Alert.alert("You can only delete the group if you are the only member");
-        return;
-      }
-      const id = result.data.userGroupsByGroupId.items[0].id;
-      variables = {
-        input: {
-          id: id
+      for(let i = 0; i < result.data.userGroupsByGroupId.items.length; i++){
+        if(result.data.userGroupsByGroupId.items[i].userId === userID){
+          variables = {
+            input: {
+              id: result.data.userGroupsByGroupId.items[i].id
+            }
+          }
+          await API.graphql({query: mutations.deleteUserGroup, variables: variables});
+          console.log("Successfully left group");
+          return;
         }
       }
-      await API.graphql({query: mutations.deleteUserGroup, variables: variables});
     }
+
     return (
 
       <SafeAreaView style={styles.container}>
@@ -254,7 +257,7 @@ function PersonalExpenseScreen() {
             <Text style={styles.buttonText}>Get Group</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={deleteGroupHandler}>
+          <Pressable style={styles.button} onPress={leaveGroupHandler}>
             <Text style={styles.buttonText}>Testing</Text>
           </Pressable>
         </View>
