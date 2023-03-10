@@ -4,6 +4,7 @@ import colors from '../config/colors';
 import { API, graphqlOperation, Auth } from "aws-amplify";
 import * as mutations from '../../src/mutations';
 import * as queries from '../../src/queries';
+import { useFocusEffect } from '@react-navigation/native';
 
 const GroupData = [
   {id: '1', category: 'Soda', amount: 2.99, description: "test" },
@@ -52,7 +53,10 @@ export default function MyComponent() {
       fetchUser();
     }, []);
     
-    
+    useFocusEffect(React.useCallback(() => 
+    {
+      getAllUserExpenses();
+    }));
   // console.log(data);
 
   const renderItem = ({ item }) => (
