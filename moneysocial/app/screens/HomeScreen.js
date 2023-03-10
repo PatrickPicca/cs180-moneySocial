@@ -172,11 +172,32 @@ function PersonalExpenseScreen() {
       console.log(newTodo.data.listGroups.items[0].name);
     }
 
-     
-   
+    const deleteExpenseHandler = async () => {
+      console.log("In delete expense handler");
+      const variables = {
+            userID : "56425332-a0ff-4548-8df0-f6b7439a1c78"
+      }
+      //list all expenses for current user. the userID is hardcoded for now
+      const result = await API.graphql({query: queries.expensesByUserID, variables});
+      //the expenseIDToDelete is hardcoded for now
+      const expenseIDToDelete = "32321f28-a8cb-46f9-a6c8-8b5c8d4c0766";
+      const variables1 = {
+        input: {
+          id: expenseIDToDelete
+        }
+      }
+      //delete the expense
+      await API.graphql({query: mutations.deleteExpense, variables: variables1});
+      console.log(result1);
+    }
     const handleCreateExpense = () => {
       navigation.navigate(CreateExpenseScreen);
     }
+
+    const deleteGroupHandler = async () => {
+      console.log("In delete group handler");
+      const variables = {
+        
 
     return (
 
@@ -198,6 +219,10 @@ function PersonalExpenseScreen() {
 
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
             <Text style={styles.buttonText}>Get Group</Text>
+          </Pressable>
+
+          <Pressable style={styles.button} onPress={deleteExpenseHandler}>
+            <Text style={styles.buttonText}>Testing</Text>
           </Pressable>
         </View>
 
