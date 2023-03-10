@@ -14,28 +14,30 @@ import { useFocusEffect } from '@react-navigation/native';
 const MyComponent = () => {
   const data = [
     {
-      name: 'Expense 1',
+      description: 'Expense 1',
       amount: 100,
       color: colors.primary,
     },
     {
-      name: 'Expense 2',
+      description: 'Expense 2',
       amount: 200,
       color: colors.secondary,
     },
     {
-      name: 'Expense 3',
+      description: 'Expense 3',
       amount: 150,
       color: colors.tertiary,
     },
   ];
 
   const [user, setUser] = useState(null);
-  const GroupData = [
-    {id: '1', category: 'Soda', amount: 2.99, description: "test" },
-    {id: '2', category: 'Chips', amount: 1.99, description: "test" },
-  ];
-  const [data2, setData2] = useState(GroupData);
+  const [theData, setTheData] = useState(expenseDataByCategory);
+  //Contains the categories of all expenses, in preperation to obtain only uniques
+  const filtering = [];
+  //Stored in uniqueVals are the cumulative sums of each unique category.
+  const uniqueVals = [];
+  //Sets the array to size of the number of unique categories.
+  const expenseDataByCategory = [];
 
     useEffect(() => {
       const fetchUser = async () => {
@@ -54,10 +56,12 @@ const MyComponent = () => {
       }; 
       fetchUser();
     }, []);
-  //Contains the categories of all expenses, in preperation to obtain only uniques
-  const filtering = [];
-  //Stored in uniqueVals are the cumulative sums of each unique category.
-  const uniqueVals = [];
+
+
+
+
+
+
   const getUserExpenses = async () => {
     const variables = {
       filter: {
@@ -90,19 +94,53 @@ const MyComponent = () => {
         }
       }
     }
-    
-    console.log(unique); 
-    console.log(uniqueVals); 
+    //Sets the array to size of the number of unique categories.
+    //expenseDataByCategory = new Array(unique.length);
+    //Sets each element of the array to be equal to another array, representing the list of expenses for each category
+    for (let x = 0; x < unique.length; x++){
+      expenseDataByCategory.push();
+      expenseDataByCategory[x] = {
+        category : unique[x],
+        data : []
+      };
+    }
+    //console.log("Length is: " + expenseDataByCategory.length);
+    //for all expenses that this use have...
+    for (let i = 0; i < newTodo.data.listExpenses.items.length; i++) {
+      //For all expense categories the user have defined...
+      for (let x = 0; x < unique.length; x++){
+        //If the category of the current expense, i,  is the cateogry we are currently looking at, x,
+        if (newTodo.data.listExpenses.items[i].category == unique[x])
+        {
+          //Then add that expenses amount and description to that categories array within expenseDataByCategory
+          expenseDataByCategory[x].data.push({
+            amount: newTodo.data.listExpenses.items[i].amount,
+            description: newTodo.data.listExpenses.items[i].description
+          });
+        }
+      }
+    }
+   // console.log(unique); 
+   // console.log(uniqueVals); 
+   // console.log(expenseDataByCategory); 
+   // console.log(expenseDataByCategory[0].data);
+    //console.log(data);
+    setTheData(expenseDataByCategory[0].data);
   }
   //The below focus function processes everything only once, whenever this screen gets focused
   useFocusEffect(React.useCallback(() => 
   {
     uniqueVals.clear;
-    getUserExpenses()
+    filtering.clear;
+    expenseDataByCategory.clear;
+    getUserExpenses();
+    //console.log(theData);
   }));
+  
+  //console.log(theData);
   //let a = ["1", "1", "2", "3", "3", "1"];
   //let unique = a.filter((item, i, ar) => ar.indexOf(item) === i);
-  //console.log(unique);
+  //console.log(unique); 
 
   const chartConfig = {
     backgroundColor: colors.background,
@@ -114,10 +152,11 @@ const MyComponent = () => {
     useShadowColorFromDataset: false // optional
   };
 
-  const chartData = data.map((item) => ({
-    name: item.name,
+  //const chartData = data.map((item) => ({
+  const chartData = theData.map((item) => ({
+    name: item.description,
     amount: item.amount,
-    color: item.color,
+    color: colors.secondary,
     legendFontColor: '#7F7F7F',
     legendFontSize: 10,
   }));
