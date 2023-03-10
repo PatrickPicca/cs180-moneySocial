@@ -134,10 +134,10 @@ const MyComponent = () => {
     filtering.clear;
     expenseDataByCategory.clear;
     getUserExpenses();
-    console.log(theData);
+    //console.log(theData);
   }));
   
-  
+  //console.log(theData);
   //let a = ["1", "1", "2", "3", "3", "1"];
   //let unique = a.filter((item, i, ar) => ar.indexOf(item) === i);
   //console.log(unique); 
@@ -152,7 +152,8 @@ const MyComponent = () => {
     useShadowColorFromDataset: false // optional
   };
 
-  const chartData = data.map((item) => ({
+  //const chartData = data.map((item) => ({
+  const chartData = theData.map((item) => ({
     name: item.description,
     amount: item.amount,
     color: colors.secondary,
