@@ -7,11 +7,15 @@ import React, {useEffect} from 'react';
 import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
 import {getUser} from './src/aws-exports';
 import {createUser} from './src/aws-exports';
-import * as mutations from './src/mutations';
-import * as queries from './src/queries';
+import * as mutations from './src/graphql/mutations';
+import * as queries from './src/graphql/queries';
   
-Amplify.configure(config);
-
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
 function App() {
 
   useEffect(() => {
