@@ -16,6 +16,9 @@ export default function GroupList() {
   const handleGroupScreen = () => {
     navigation.navigate("CreateGroupScreen");
   }
+  const handleJoinScreen = () => {
+    navigation.navigate("JoinGroupScreen");
+  }
 
   const [user, setUser] = useState(null);
   const [groups, setGroups] = useState(null);
@@ -77,8 +80,8 @@ export default function GroupList() {
           />
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.createButton} onPress={handleGroupScreen}>
-            <Text style={styles.createText}>Create Group</Text>
+          <TouchableOpacity style={styles.joinButton} onPress={handleJoinScreen}>
+            <Text style={styles.createText}>Join Group</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.createButton} onPress={handleGroupScreen}>
             <Text style={styles.createText}>Create Group</Text>
@@ -131,6 +134,14 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   createButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '49%',
+  },
+  joinButton: {
     backgroundColor: colors.primary,
     borderRadius: 10,
     padding: 10,
