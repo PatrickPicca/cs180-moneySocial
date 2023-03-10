@@ -5,8 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../config/colors';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/mutations';
-import * as queries from '../../src/queries';
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
 import awsconfig from '../../src/aws-exports';
 API.configure(awsconfig);
 

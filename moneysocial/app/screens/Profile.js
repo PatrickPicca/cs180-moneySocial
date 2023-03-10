@@ -6,8 +6,8 @@ import { PieChart } from 'react-native-chart-kit';
 import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/mutations';
-import * as queries from '../../src/queries';
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
 import awsconfig from '../../src/aws-exports';
 import { useFocusEffect } from '@react-navigation/native';
 

@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import colors from '../config/colors';
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/mutations';
-import * as queries from '../../src/queries';
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
 import { useFocusEffect } from '@react-navigation/native';
 
 const GroupData = [
