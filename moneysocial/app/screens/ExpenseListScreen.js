@@ -1,18 +1,63 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import colors from '../config/colors';
+import { API, graphqlOperation, Auth } from "aws-amplify";
+import * as mutations from '../../src/mutations';
+import * as queries from '../../src/queries';
+import { useFocusEffect } from '@react-navigation/native';
 
 const GroupData = [
-  {id: '1', name: 'Soda', value: 2.99 },
-  {id: '2', name: 'Chips', value: 1.99 },
+  {id: '1', category: 'Soda', amount: 2.99, description: "test" },
+  {id: '2', category: 'Chips', amount: 1.99, description: "test" },
 ];
 
 export default function MyComponent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [data, setData] = useState(GroupData);
   const [editingId, setEditingId] = useState(null);
-  const [name, setName] = useState('');
-  const [value, setValue] = useState('');
+  const [category, setCategory] = useState('');
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+
+  const [user, setUser] = useState(null);
+
+  const getAllUserExpenses = async () => {
+    //This block of code queries a specified expense object
+   // console.log("In getAllUSerExpenses handler");
+    const variables = {
+      filter: {
+        userID : {eq: user}
+      },
+    };
+    const newTodo = await API.graphql({ query: queries.listExpenses,  variables});
+ //   console.log(newTodo.data.listExpenses.items);
+    setData(newTodo.data.listExpenses.items);
+  }
+
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          const userData2 = await API.graphql(
+            graphqlOperation(queries.getUser, { id: authUser.attributes.sub })
+          );
+          console.log(authUser.attributes.sub);
+          setUser(authUser.attributes.sub);
+        } catch (error) {
+          console.log('Error fetching user data:', error);
+        }
+      }; 
+      getAllUserExpenses();
+      fetchUser();
+    }, []);
+    
+    useFocusEffect(React.useCallback(() => 
+    {
+      getAllUserExpenses();
+    }));
+  // console.log(data);
 
   const renderItem = ({ item }) => (
     <View style={styles.displayBalance}>
@@ -20,15 +65,21 @@ export default function MyComponent() {
         <View style={styles.editContainer}>
           <TextInput
             style={styles.editInput}
-            placeholder="Enter new name"
-            value={name}
-            onChangeText={text => setName(text)}
+            placeholder="Enter new category"
+            value={category}
+            onChangeText={text => setCategory(text)}
           />
           <TextInput
             style={styles.editInput}
             placeholder="Enter new value"
-            value={value}
-            onChangeText={text => setValue(text)}
+            value={amount}
+            onChangeText={text => setAmount(text)}
+          />
+          <TextInput
+            style={styles.editInput}
+            placeholder="Enter new description"
+            value={description}
+            onChangeText={text => setDescription(text)}
           />
           <TouchableOpacity
             style={styles.updateButton}
@@ -39,7 +90,7 @@ export default function MyComponent() {
         </View>
       ) : (
         <View style={styles.itemContainer}>
-          <Text style={styles.displayText}>{`${item.name}: $${item.value}`}</Text>
+          <Text style={styles.displayText}>{`${item.category}: $${item.amount}`}</Text>
           <View style={styles.buttonContainer}>
 
             <TouchableOpacity
@@ -64,30 +115,58 @@ export default function MyComponent() {
 
   const handleEdit = (item) => {
     setEditingId(item.id);
-    setName(item.name);
-    setValue(item.value.toString());
+    setCategory(item.category);
+    setDescription(item.description);
+    setAmount(item.amount.toString());
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate =async (id) => {
+
+    //Need to log the id to see if its represents the expenses's unique id.
+    //Need to run update query based on current values stored for that expense.
+
+    const variables2 = {
+      id : id,
+      amount : amount,
+      description : description,
+      category : category
+    };
+    const newTodo2 = await API.graphql({ query: mutations.updateExpense,  variables: { input: variables2 }});
+    getAllUserExpenses();
+    /*
     const updatedData = data.map((item) => {
       if (item.id === id) {
-        return { ...item, name, value: parseFloat(value) };
+        return { ...item, category, amount: parseFloat(amount) };
       }
       return item;
     });
     setData(updatedData);
+    */
     setEditingId(null);
-    setName('');
-    setValue('');
+    setCategory('');
+    setAmount('');
+    setDesc('');
   };
 
-  const handleRemove = (id) => {
-    const updatedData = data.filter(item => item.id !== id);
-    setData(updatedData);
+  const handleRemove = async (id) => {
+    const theID = id;
+    console.log("id in question: " + id);
+    const variables = {
+      input: {
+        id : theID
+      },
+    };
+    const newTodo = await API.graphql({ query: mutations.deleteExpense,  variables});
+    //const updatedData = data.filter(item => item.id !== id);
+
+    //Instead of defining updatedData, we simply will use a mutation to delete that expense.
+    getAllUserExpenses();
+
+    //setData(updatedData);
   };
 
-  const filteredData = data.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-
+  const filteredData = data.filter(item => item.category.toLowerCase().includes(searchQuery.toLowerCase()))
+  
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.label}>Expense List:</Text>
