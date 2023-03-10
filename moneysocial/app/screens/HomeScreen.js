@@ -213,7 +213,24 @@ function PersonalExpenseScreen() {
 
     const deleteGroupHandler = async () => {
       console.log("In delete group handler");
-      
+      //the groupToDelete is hardcoded for now
+      const groupToDelete = "d31ba286-216b-47b9-9c41-5e584f1cea30"
+      let variables = {
+        groupId: groupToDelete
+      }
+      let result = await API.graphql({query: queries.userGroupsByGroupId, variables: variables});
+      console.log(result.data.userGroupsByGroupId.items);
+      if(result.data.userGroupsByGroupId.items.length !== 1){
+        Alert.alert("You can only delete the group if you are the only member");
+        return;
+      }
+      const id = result.data.userGroupsByGroupId.items[0].id;
+      variables = {
+        input: {
+          id: id
+        }
+      }
+      await API.graphql({query: mutations.deleteUserGroup, variables: variables});
     }
     return (
 
@@ -237,7 +254,7 @@ function PersonalExpenseScreen() {
             <Text style={styles.buttonText}>Get Group</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={deleteExpenseHandler}>
+          <Pressable style={styles.button} onPress={deleteGroupHandler}>
             <Text style={styles.buttonText}>Testing</Text>
           </Pressable>
         </View>
