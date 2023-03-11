@@ -29,6 +29,17 @@ export default function MainNavigation() {
             
                 initialRouteName={homeName}
                 screenOptions={({route}) => ({
+                    tabBarActiveTintColor: "#528265",
+                    tabBarInactiveTintColor: "black",
+                    tabBarLabelStyle: {
+                        fontSize: 12
+                    },
+                    tabBarStyle: [
+                        {
+                            display: "flex"
+                        },
+                        null
+                    ],
                     tabBarIcon: ({ focused, color, size}) => {
                         let iconName;
                         let rn = route.name;
@@ -51,12 +62,7 @@ export default function MainNavigation() {
                     headerShown: false
     
                 })}
-                tabBarOptions={{
-                    activeTintColor: colors.primary,
-                    inactiveTintColor: 'black',
-                    labelStyle: {fontSize: 12},
-                    style: {padding: 10},
-                }}
+
                 
                 >
 
