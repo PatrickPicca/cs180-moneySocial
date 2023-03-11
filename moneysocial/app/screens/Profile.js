@@ -12,26 +12,10 @@ import awsconfig from '../../src/aws-exports';
 import { useFocusEffect } from '@react-navigation/native';
 
 const MyComponent = () => {
-  const data = [
-    {
-      description: 'Expense 1',
-      amount: 100,
-      color: colors.primary,
-    },
-    {
-      description: 'Expense 2',
-      amount: 200,
-      color: colors.secondary,
-    },
-    {
-      description: 'Expense 3',
-      amount: 150,
-      color: colors.tertiary,
-    },
-  ];
+  const data = [];
 
   const [user, setUser] = useState(null);
-  const [theData, setTheData] = useState(expenseDataByCategory);
+  const [theData, setTheData] = useState(data);
   //Contains the categories of all expenses, in preperation to obtain only uniques
   const filtering = [];
   //Stored in uniqueVals are the cumulative sums of each unique category.
