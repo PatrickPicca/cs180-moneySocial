@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PieChart } from 'react-native-chart-kit';
 import { Picker } from '@react-native-picker/picker';
 import colors from '../config/colors';
-import Legend from './Legend';
+
+const chartContainerWidth = Dimensions.get('window').width * 0.9; // 90% of screen width
+const chartContainerHeight = chartContainerWidth * 0.8; // 80% of chart width
 
 const MyComponent = () => {
   const data = [
@@ -51,41 +53,44 @@ const MyComponent = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.label}>Expense Graphs</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={selectedExpense}
-          onValueChange={onExpenseChange}
-          style={{ color: colors.text }}
-        >
-          {data.map((item, index) => (
-            <Picker.Item
-              key={index}
-              label={item.name}
-              value={item.name}
-            />
-          ))}
-        </Picker>
-      </View>
-      <View style={styles.chartContainer}>
-        <PieChart
-          data={chartData.filter((item) => item.name === selectedExpense)}
-          width={300}
-          height={175}
-          chartConfig={chartConfig}
-          accessor="amount"
-          backgroundColor="transparent"
-          hasLegend={false}
-        />        
-      </View>
-      <View>
-      {data.map((item, index) => (
-        <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ width: 20, height: 20, backgroundColor: item.color, marginRight: 5, marginVertical: 10, marginHorizontal: 20}} />
-          <Text style={{ fontSize: 12 }}>{item.name}</Text>
+
+        <Text style={styles.label}>Expense Graphs</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={selectedExpense}
+            onValueChange={onExpenseChange}
+            style={{ color: colors.text }}
+          >
+            {data.map((item, index) => (
+              <Picker.Item
+                key={index}
+                label={item.name}
+                value={item.name}
+              />
+            ))}
+          </Picker>
         </View>
-      ))}
-    </View>
+        <View style={[styles.chartContainer]}>
+          <PieChart
+            data={chartData.filter((item) => item.name === selectedExpense)}
+            width={300}
+            height={170}
+            chartConfig={chartConfig}
+            accessor="amount"
+            center={[75, 0]}
+            backgroundColor="transparent"
+            hasLegend={false}
+          />        
+        </View>
+        <View>
+        {data.map((item, index) => (
+          <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ width: 20, height: 20, backgroundColor: item.color, marginRight: 5, marginVertical: 10, marginHorizontal: 20}} />
+            <Text style={{ fontSize: 12 }}>{item.name}</Text>
+          </View>
+        ))}
+      </View>
+
     </SafeAreaView>
   );
 };
