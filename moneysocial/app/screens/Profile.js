@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PieChart } from 'react-native-chart-kit';
+import { Picker } from '@react-native-picker/picker';
 import colors from '../config/colors';
+import Legend from './Legend';
 
 const MyComponent = () => {
   const data = [
     {
       name: 'Expense 1',
       amount: 100,
-      color: colors.primary,
+      color: `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`,
     },
     {
       name: 'Expense 2',
       amount: 200,
-      color: colors.secondary,
+      color: `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`,
     },
     {
       name: 'Expense 3',
       amount: 150,
-      color: colors.tertiary,
+      color: `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`,
     },
   ];
 
@@ -41,19 +43,49 @@ const MyComponent = () => {
     legendFontSize: 10,
   }));
 
+  const [selectedExpense, setSelectedExpense] = useState(data[0].name);
+
+  const onExpenseChange = (expenseName) => {
+    setSelectedExpense(expenseName);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.label}>Expense Graphs</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedExpense}
+          onValueChange={onExpenseChange}
+          style={{ color: colors.text }}
+        >
+          {data.map((item, index) => (
+            <Picker.Item
+              key={index}
+              label={item.name}
+              value={item.name}
+            />
+          ))}
+        </Picker>
+      </View>
       <View style={styles.chartContainer}>
         <PieChart
-          data={chartData}
+          data={chartData.filter((item) => item.name === selectedExpense)}
           width={300}
           height={175}
           chartConfig={chartConfig}
           accessor="amount"
           backgroundColor="transparent"
-        />
+          hasLegend={false}
+        />        
       </View>
+      <View>
+      {data.map((item, index) => (
+        <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ width: 20, height: 20, backgroundColor: item.color, marginRight: 5, marginVertical: 10, marginHorizontal: 20}} />
+          <Text style={{ fontSize: 12 }}>{item.name}</Text>
+        </View>
+      ))}
+    </View>
     </SafeAreaView>
   );
 };
@@ -70,6 +102,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 10
+  },
+  pickerContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   chartContainer: {
     alignItems: 'center',
