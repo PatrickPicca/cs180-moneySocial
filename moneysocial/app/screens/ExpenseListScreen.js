@@ -11,6 +11,7 @@ const GroupData = [
   {id: '2', category: 'Chips', amount: 1.99, description: "test" },
 ];
 
+
 export default function MyComponent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [data, setData] = useState(GroupData);

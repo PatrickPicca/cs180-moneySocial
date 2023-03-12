@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Animated, FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { createGroup, createUserGroup } from '../../src/graphql/mutations';
@@ -7,11 +7,9 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import colors from '../config/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
 export default function GroupList() {
-
+  
   const navigation = useNavigation();
-
 
   const handleGroupScreen = () => {
     navigation.navigate("CreateGroupScreen");
@@ -32,7 +30,9 @@ export default function GroupList() {
   );
   
     const fetchUserGroups = async () => {
+
       try {
+        
         const userInfo = await Auth.currentAuthenticatedUser();
         const userId = userInfo.attributes.sub;
         const result = await API.graphql(graphqlOperation(userGroupsByUserId, { userId }));
