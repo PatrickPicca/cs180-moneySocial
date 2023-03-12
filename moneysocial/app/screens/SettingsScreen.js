@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
 import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
+import { Auth } from 'aws-amplify';
 
 import colors from '../config/colors'
 import { useNavigation, useNavigationState } from '@react-navigation/native';
@@ -13,7 +14,17 @@ function SettingsScreen(props) {
     const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
-    
+
+    const navigation = useNavigation();
+
+    const onSignOutClick = async () => {
+    try {
+      const data = await Auth.signOut();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
     return (
 
@@ -27,7 +38,7 @@ function SettingsScreen(props) {
                 <Text style={styles.displayText}>{'Password: '}</Text>
             </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onSignOutClick}>
             <Text style={styles.buttonText}>LOG OUT</Text>
         </TouchableOpacity>
 
@@ -41,15 +52,11 @@ function SettingsScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: height / 8,
-        justifyContent: 'center',
         paddingTop: 40,
-        //paddingRight: width/1.5,
         backgroundColor: colors.background,
       }, 
       titleContainer:{
         flex: 1,
-       //justifyContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
