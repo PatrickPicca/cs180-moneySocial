@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { createGroup, createUserGroup } from '../../src/graphql/mutations';
-import { listGroups, listUserGroups } from '../../src/graphql/queries';
-import colors from '../config/colors';
+import { createGroup, createUserGroup } from '../../../src/graphql/mutations';
+import { listGroups, listUserGroups } from '../../../src/graphql/queries';
+import colors from '../../config/colors';
 import { useNavigation } from '@react-navigation/native';
 
 export default function JoinGroupScreen() {
