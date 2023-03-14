@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Animated, FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { createGroup, createUserGroup } from '../../src/graphql/mutations';
-import { getGroup, listUserGroups, userGroupsByUserId } from '../../src/graphql/queries';
+import { createGroup, createUserGroup } from '../../../src/graphql/mutations';
+import { getGroup, listUserGroups, userGroupsByUserId } from '../../../src/graphql/queries';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function GroupList() {
@@ -52,10 +52,12 @@ export default function GroupList() {
         console.log('Error fetching user groups', error);
       }
     };
-  
+    const handleGroupDisplay = (id) => {
+      navigation.navigate("GroupTabs", { id: id });
+    }
     const renderGroup = ({ item }) => {
       return (
-        <TouchableOpacity style={styles.groupItem}>
+        <TouchableOpacity onPress={() => handleGroupDisplay(item.id)} style={styles.groupItem}>
           <Text style={styles.groupName}>{item.name}</Text>
           <Text style={styles.keyText}>Key: {item.groupKey}</Text>
           <Text style={styles.idText}>Group ID: {item.id}</Text>
