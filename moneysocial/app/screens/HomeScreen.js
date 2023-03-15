@@ -234,30 +234,6 @@ function PersonalExpenseScreen() {
       navigation.navigate(CreateExpenseScreen);
     }
 
-    const leaveGroupHandler = async () => {
-      console.log("In delete group handler");
-      //the groupToDelete is hardcoded for now
-      const groupToLeave = "a0fcbc1a-ffb8-433f-832e-09914ded3d4b"
-      //the userID is hardcoded for now
-      const userID = "9b75f790-91cb-45d3-9da3-5f802da90355"
-      let variables = {
-        groupId: groupToLeave
-      }
-      let result = await API.graphql({query: queries.userGroupsByGroupId, variables: variables});
-      for(let i = 0; i < result.data.userGroupsByGroupId.items.length; i++){
-        if(result.data.userGroupsByGroupId.items[i].userId === userID){
-          variables = {
-            input: {
-              id: result.data.userGroupsByGroupId.items[i].id
-            }
-          }
-          await API.graphql({query: mutations.deleteUserGroup, variables: variables});
-          console.log("Successfully left group");
-          return;
-        }
-      }
-    }
-
     return (
 
       <SafeAreaView style={styles.container}>
@@ -278,10 +254,6 @@ function PersonalExpenseScreen() {
 
           <Pressable style={styles.button} onPress={getGroupKeyHandler}>
             <Text style={styles.buttonText}>Get Group</Text>
-          </Pressable>
-
-          <Pressable style={styles.button} onPress={leaveGroupHandler}>
-            <Text style={styles.buttonText}>Testing</Text>
           </Pressable>
         </View>
 
