@@ -19,7 +19,6 @@ function GroupHome(props) {
   const { id } = props;
   const navigation = useNavigation();
   const [group, setGroup] = useState(null);
-  const [user, setUser] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
