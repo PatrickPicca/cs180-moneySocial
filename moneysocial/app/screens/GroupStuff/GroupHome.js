@@ -40,6 +40,11 @@ function GroupHome(props) {
     navigation.navigate('CreateGroupExpense', {id: id});
   }
 
+  //deleteGroupHandler is not completed here because
+  //not everyone should be able to delete the group, yet we lack
+  //a groupOwner field, so I just merged it with leaveGroupHandler.
+  //When the last person leaves the group, the group is automatically deleted.
+
   // const deleteGroupHandler = async (id) => {
   //   console.log("In delete group handler");
   //   Alert.alert(
