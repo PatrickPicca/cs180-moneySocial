@@ -1,24 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 import StackNavigator from './app/Routes/StackNavigator';
-import {withAuthenticator} from 'aws-amplify-react-native';
-import config from './src/aws-exports';
+//import {withAuthenticator} from 'aws-amplify-react-native';
+//import config from './src/aws-exports';
 
 import React, {useEffect} from 'react';
-import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
-import {getUser} from './src/aws-exports';
-import {createUser} from './src/aws-exports';
-import * as mutations from './src/graphql/mutations';
-import * as queries from './src/graphql/queries';
+//import { Amplify, Auth, API, graphqlOperation, Storage} from 'aws-amplify';
+//import {getUser} from './src/aws-exports';
+//import {createUser} from './src/aws-exports';
+//import * as mutations from './src/graphql/mutations';
+//import * as queries from './src/graphql/queries';
   
-Amplify.configure({
+/*Amplify.configure({
   ...config,
   Analytics: {
     disabled: true,
   },
-});
+});*/
 function App() {
 
-  useEffect(() => {
+  /*useEffect(() => {
     const syncUser = async () => {
       // get Auth user
       const authUser = await Auth.currentAuthenticatedUser({
@@ -49,14 +49,14 @@ function App() {
     };
 
     syncUser();
-  }, []);
+  }, []);*/
 
   return (
-  <StackNavigator />
+    <StackNavigator />
   );
 };
 
-const signUpConfig = {
+/*const signUpConfig = {
   header: "My Customized Sign Up",
   hideAllDefaults: true,
   signUpFields: [
@@ -90,5 +90,5 @@ const signUpConfig = {
     },
   ],
 };
-
-export default withAuthenticator(App, {signUpConfig}); 
+*/
+export default App; 

@@ -1,36 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity, Alert} from "react-native";
-import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
-import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import CreateExpenseScreen from './createExpenseScreen';
+//import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
+//import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
+//import Ionicons from 'react-native-vector-icons/Ionicons';
+//import CreateExpenseScreen from './createExpenseScreen';
 import colors from '../config/colors';
 import { useNavigation } from '@react-navigation/native';
-import UploadImage from './uploadImage';
+//import UploadImage from './uploadImage';
 //import stackNavigator from '../Routes/MainNavigation';
 //import WelcomeScreen from './WelcomeScreen';
-import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/graphql/mutations';
-import * as queries from '../../src/graphql/queries';
-import awsconfig from '../../src/aws-exports';
-API.configure(awsconfig);
+//import { API, graphqlOperation, Auth } from "aws-amplify";
+//import * as mutations from '../../src/graphql/mutations';
+//import * as queries from '../../src/graphql/queries';
+//import awsconfig from '../../src/aws-exports';
+//API.configure(awsconfig);
 
 const {width, height} = Dimensions.get('window');
 
-function PersonalExpenseScreen() {
-    const {height, width} = Dimensions.get('window');
-    const imagePosition = useSharedValue(1);
-    const [isRegistering, setIsRegistering] = useState(false);
+function PersonalExpenseScreen({ myName, myValue1, myValue2}) {
+    //const {height, width} = Dimensions.get('window');
+    //const imagePosition = useSharedValue(1);
+    //const [isRegistering, setIsRegistering] = useState(false);
 
-    const myValue1 = 1500;
-    const myValue2 = 50;
-    const myName = 'User';
+    //const myValue1 = 1500;
+    //const myValue2 = 50;
+    //const myName = 'User';
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
 
     //user represents the user id used to query and mutate anything related to the currently logged in user.
-    const [user, setUser] = useState(null);
-    useEffect(() => {
+    //const [user, setUser] = useState(null);
+    /*useEffect(() => {
       const fetchUser = async () => {
         try {
           const authUser = await Auth.currentAuthenticatedUser({
@@ -93,7 +93,7 @@ function PersonalExpenseScreen() {
             setIsRegistering(true);
         }
     }
-
+*/
     const WelcomeScreenHandler = () => {
       props.navigation.navigate('WelcomeScreen');
     }
@@ -239,7 +239,6 @@ function PersonalExpenseScreen() {
       <SafeAreaView style={styles.container}>
 
         <Text style={styles.welcomeText}>{'Welcome ' + myName + '!'}</Text>
-        <UploadImage/>
         <Text style={styles.displayText}>{'Monthly Budget: $' + myValue1}</Text>
         <Text style={styles.displayText}>{'Monthly Expenses: $' + myValue2}</Text>
 
@@ -258,7 +257,7 @@ function PersonalExpenseScreen() {
         </View>
 
         <TouchableOpacity style={styles.bottombutton} onPress = {handleCreateExpense}>
-          <Ionicons name="add" />
+          <Text>+</Text>
         </TouchableOpacity>
         </SafeAreaView>
       
