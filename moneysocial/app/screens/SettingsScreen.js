@@ -1,30 +1,23 @@
 import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity } from "react-native";
-import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
-import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
-import { Auth } from 'aws-amplify';
+//import Svg, {Image, Ellipse, ClipPath} from "react-native-svg";
+//import Animated, {useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay} from 'react-native-reanimated';
+//import { Auth } from 'aws-amplify';
 
 import colors from '../config/colors'
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+//import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 
-const {width, height} = Dimensions.get('window');
+//const {width, height} = Dimensions.get('window');
 
 function SettingsScreen(props) {
-    const {height, width} = Dimensions.get('window');
+    /*const {height, width} = Dimensions.get('window');
     const imagePosition = useSharedValue(1);
     const [isRegistering, setIsRegistering] = useState(false);
 
-    const navigation = useNavigation();
+    const navigation = useNavigation();*/
 
-    const onSignOutClick = async () => {
-    try {
-      const data = await Auth.signOut();
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const { onSignOutClick } = props;
 
     return (
 
@@ -113,15 +106,6 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
         paddingBottom: 20,
         paddingLeft: 20
-      },
-      bottomContainer: {
-        justifyContent: 'center',
-        height: height / 8,
-      },
-      bottomScreenHeader: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        height: height / 8,
       },
       textInput: {
         height: 50,

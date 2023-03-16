@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { SafeAreaView, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import colors from '../config/colors';
-import { API, graphqlOperation, Auth } from "aws-amplify";
-import * as mutations from '../../src/graphql/mutations';
-import * as queries from '../../src/graphql/queries';
-import { useFocusEffect } from '@react-navigation/native';
-
-const GroupData = [
-  {id: '1', category: 'Soda', amount: 2.99, description: "test" },
-  {id: '2', category: 'Chips', amount: 1.99, description: "test" },
-];
+//import { API, graphqlOperation, Auth } from "aws-amplify";
+//import * as mutations from '../../src/graphql/mutations';
+//import * as queries from '../../src/graphql/queries';
+//import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function MyComponent() {
+
+  const GroupData = [
+    {id: '1', category: 'Soda', amount: 2.99, description: "test" },
+    {id: '2', category: 'Chips', amount: 1.99, description: "test" },
+  ];
   const [searchQuery, setSearchQuery] = useState('');
   const [data, setData] = useState(GroupData);
   const [editingId, setEditingId] = useState(null);
@@ -22,7 +22,7 @@ export default function MyComponent() {
 
   const [user, setUser] = useState(null);
 
-  const getAllUserExpenses = async () => {
+  /*const getAllUserExpenses = async () => {
     //This block of code queries a specified expense object
    // console.log("In getAllUSerExpenses handler");
     const variables = {
@@ -59,6 +59,7 @@ export default function MyComponent() {
       getAllUserExpenses();
     }));
   // console.log(data);
+  */
 
   const renderItem = ({ item }) => (
     <View style={styles.displayBalance}>
@@ -91,9 +92,10 @@ export default function MyComponent() {
         </View>
       ) : (
         <View style={styles.itemContainer}>
-          <Text style={styles.displayText}>{`${item.category}: $${item.amount}`}</Text>
-          <View style={styles.buttonContainer}>
 
+          <Text style={styles.displayText}>{`${item.category}: $${item.amount}`}</Text>
+
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.editButton}
               onPress={() => handleEdit(item)}
@@ -107,8 +109,8 @@ export default function MyComponent() {
             >
               <Text style={styles.removeButtonText}>Remove</Text>
             </TouchableOpacity>
-
           </View>
+          
         </View>
       )}
     </View>
@@ -121,7 +123,7 @@ export default function MyComponent() {
     setAmount(item.amount.toString());
   };
 
-  const handleUpdate =async (id) => {
+  /*const handleUpdate =async (id) => {
 
     //Need to log the id to see if its represents the expenses's unique id.
     //Need to run update query based on current values stored for that expense.
@@ -142,14 +144,14 @@ export default function MyComponent() {
       return item;
     });
     setData(updatedData);
-    */
+    
     setEditingId(null);
     setCategory('');
     setAmount('');
     setDesc('');
   };
-
-  const handleRemove = async (id) => {
+*/
+  /*const handleRemove = async (id) => {
     const theID = id;
     console.log("id in question: " + id);
     const variables = {
@@ -165,7 +167,7 @@ export default function MyComponent() {
 
     //setData(updatedData);
   };
-
+*/
   const filteredData = data.filter(item => item.category.toLowerCase().includes(searchQuery.toLowerCase()))
   
   return (

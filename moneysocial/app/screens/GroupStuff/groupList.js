@@ -1,34 +1,41 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Animated, FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+/*
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { createGroup, createUserGroup } from '../../../src/graphql/mutations';
 import { getGroup, listUserGroups, userGroupsByUserId } from '../../../src/graphql/queries';
+*/
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import colors from '../../config/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function GroupList() {
+export default function GroupList({testLoad, testGroups}) {
   
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
   const handleGroupScreen = () => {
-    navigation.navigate("CreateGroupScreen");
+    //navigation.navigate("CreateGroupScreen");
+    console.log('navigated');
   }
   const handleJoinScreen = () => {
-    navigation.navigate("JoinGroupScreen");
+    //navigation.navigate("JoinGroupScreen");
+    console.log('navigated');
+
   }
 
   const [user, setUser] = useState(null);
-  const [groups, setGroups] = useState(null);
+  const [groups, setGroups] = useState(testGroups);
   const [userGroups, setUserGroups] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(testLoad);
   
+  /*
   useFocusEffect(
     React.useCallback(() => {
       fetchUserGroups();
     }, [])
   );
-  
+  */
+ /*
     const fetchUserGroups = async () => {
 
       try {
@@ -52,8 +59,10 @@ export default function GroupList() {
         console.log('Error fetching user groups', error);
       }
     };
+*/
     const handleGroupDisplay = (id) => {
-      navigation.navigate("GroupTabs", { id: id });
+      //navigation.navigate("GroupTabs", { id: id });
+      console.log('navigated');
     }
     const renderGroup = ({ item }) => {
       return (

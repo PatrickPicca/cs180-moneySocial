@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity, Alert } from "react-native";
-import Svg, { Image, Ellipse, ClipPath } from "react-native-svg";
-import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay } from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import CreateExpenseScreen from '../createExpenseScreen';
+//import Svg, { Image, Ellipse, ClipPath } from "react-native-svg";
+//import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay } from 'react-native-reanimated';
+//import Ionicons from 'react-native-vector-icons/Ionicons';
+//import CreateExpenseScreen from '../createExpenseScreen';
 import colors from '../../config/colors';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { API, graphqlOperation, Auth } from "aws-amplify";
-import { getGroup } from '../../../src/graphql/queries';
-import * as queries from '../../../src/graphql/queries';
-import * as mutations from '../../../src/graphql/mutations';
+//import { useNavigation, useFocusEffect } from '@react-navigation/native';
+//import { API, graphqlOperation, Auth } from "aws-amplify";
+//import { getGroup } from '../../../src/graphql/queries';
+//import * as queries from '../../../src/graphql/queries';
+//import * as mutations from '../../../src/graphql/mutations';
 import awsconfig from '../../../src/aws-exports';
-import { AuthPiece } from 'aws-amplify-react-native';
-API.configure(awsconfig);
+//import { AuthPiece } from 'aws-amplify-react-native';
 
 function GroupHome(props) {
 
   const { id } = props;
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
   const [group, setGroup] = useState(null);
 
-  useFocusEffect(
+  /*useFocusEffect(
     React.useCallback(() => {
       fetchGroup();
     }, [])
@@ -126,7 +125,7 @@ function GroupHome(props) {
         //if the user is the only member of the group, delete the group
   }
 
-
+*/
 
   return (
     <SafeAreaView style={styles.container}>
@@ -139,7 +138,7 @@ function GroupHome(props) {
       </View>
       
       <TouchableOpacity onPress={() => handleCreateGroupExpenseScreen(id)} style={styles.bottombutton}>
-        <Ionicons name="add" />
+        <Text>+</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

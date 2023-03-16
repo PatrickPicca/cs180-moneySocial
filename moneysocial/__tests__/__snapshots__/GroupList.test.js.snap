@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupList component renders correctly 1`] = `
+<renderGroup
+  item={
+    Object {
+      "groupKey": "ABC",
+      "id": 1,
+      "name": "Group 1",
+    }
+  }
+/>
+`;

@@ -13,7 +13,7 @@
     "preset": "jest-expo",
     "transformIgnorePatterns": [
       "node_modules/(?!(@react-native|react-native|react-native-vector-icons/Ionicons))"
-    ] 
+    ]
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
@@ -24,6 +24,7 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
+    "@testing-library/react-native": "^12.0.0",
     "amazon-cognito-identity-js": "^6.1.2",
     "aws-amplify": "^5.0.15",
     "aws-amplify-react-native": "^7.0.2",

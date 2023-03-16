@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<renderItem
+  amount=""
+  category=""
+  description=""
+  editingId={null}
+  handleEdit={[MockFunction]}
+  handleRemove={[MockFunction]}
+  handleUpdate={[MockFunction]}
+  item={
+    Object {
+      "amount": 10,
+      "category": "Food",
+      "description": "Groceries",
+      "id": 1,
+    }
+  }
+/>
+`;

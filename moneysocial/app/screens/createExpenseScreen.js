@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, View, Dimensions, TextInput, Pressable, TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+//import { useNavigation } from '@react-navigation/native';
+//import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../config/colors';
 
-import { API, graphqlOperation, Auth } from "aws-amplify";
+/*import { API, graphqlOperation, Auth } from "aws-amplify";
 import * as mutations from '../../src/graphql/mutations';
-import * as queries from '../../src/graphql/queries';
-import awsconfig from '../../src/aws-exports';
-API.configure(awsconfig);
+import * as queries from '../../src/graphql/queries';*/
 
 
 function CreateExpenseScreen() {
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
   const [category, setCategory] = useState('');
   const [desc, setDesc] = useState('');
   const [amount, setAmount] = useState('');
-
+/*
   const [user, setUser] = useState(null);
     useEffect(() => {
       const fetchUser = async () => {
@@ -36,7 +34,7 @@ function CreateExpenseScreen() {
       fetchUser();
     }, []);
 
-
+*/
 
 
   const handleBack = () => {
@@ -80,10 +78,8 @@ function CreateExpenseScreen() {
       />
 
       <TouchableOpacity style={styles.returnbutton} onPress={handleBack}>
-        <Ionicons name={'arrow-back-outline'} size={40} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.returnbutton} onPress={handleCreateExpense}>
-        <Ionicons name={'arrow-forward-outline'} size={40} />
       </TouchableOpacity>
     </View>
   );
